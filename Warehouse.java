@@ -1,4 +1,4 @@
 package Project1;
-public class Order{
+public class Warehouse{
     
 }
