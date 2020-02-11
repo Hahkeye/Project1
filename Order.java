@@ -1,8 +1,9 @@
 package Project1;
 
 import java.util.*;
+import java.io.*;
 
-public class Order{
+public class Order implements Serializable{
     private List<Product> productList = new LinkedList<Product>();
     private Client orderOwner;
     private double orderTotal;
