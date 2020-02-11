@@ -1,6 +1,8 @@
 package Project1;
+import java.io.*;
+import java.util.*;
 
-public class Product{
+public class Product implements Serializable{
     private String name;
     private String description;
     private int supplier;
