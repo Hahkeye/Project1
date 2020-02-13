@@ -21,11 +21,14 @@ public class Supplier implements Serializable{
     public void setID(int id){
         this.ID=id;
     }
-    public void addItem(Item i){
-        this.items.add(i);
+    public void addItem(Product p){
+        this.items.add(p);
     }
-    public void removeItem(Item i){
-        this.items.remove(i);
+    public void removeItem(Product p){
+        this.items.remove(p);
+    }
+    public String toString(){
+        return this.name+"|"+this.items;
     }
 
 }

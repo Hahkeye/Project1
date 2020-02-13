@@ -2,17 +2,30 @@ package project1;
 
 import java.util.*;
 
-import jdk.internal.jline.internal.InputStreamReader;
+//import jdk.internal.jline.internal.InputStreamReader;
 
-import java.beans.PropertyDescriptor;
+//import java.beans.PropertyDescriptor;
 import java.io.*;
 
 public class Userinterface{
-    private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products ";
-    private static File checkFile = new File("ClientData");
-    private static ClientDirectory clients;
-    private static ProductDirectory products;
-    private static SupplierDirectory suppliers;
+    private static Userinterface ui;
+    private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products\n4. Display Clients\n5. Display Suppliers\n6. Display Products\n7. Save data ";
+    private static Warehouse warehouse;
+    private Userinterface(){
+        if(tOrf("Use save data? y/n?")){
+            retrieve();
+        }else{
+            warehouse= Warehouse.instance();
+        }
+
+    }
+    public static Userinterface instance(){
+        if (ui == null){
+            return (ui =  new Userinterface());
+        }else{
+            return ui;
+        }
+    }
     public static String getResponse(String query){
         do{
             try {
@@ -36,7 +49,7 @@ public class Userinterface{
         }
         return false;
     }
-    public static void addClient(ClientDirectory clients){
+    public void addClient(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         do{
             try{
@@ -44,55 +57,93 @@ public class Userinterface{
                 String name = reader.readLine();
                 System.out.println("Enter Client ID:");
                 int id = Integer.valueOf(reader.readLine());
-                clients.insert(new Client(name,id));
+                warehouse.addClient(name,id);
                 if(!tOrf("Do you want to add another Client? y/n?")){
                     break;
                 }
-            }catch(IOError e){
+            }catch(IOException e){
                 System.out.println("client entering error "+e);
             }
         }while(true);
         
     }
-    public static void addSupplier(){
-        System.out.println("asdasd");
-    }
-    public static void addProduct(){
-        System.out.println("asdasd");
-    }
-    public static void main(String[] args) {
-        // ClientDirectory clients=ClientDirectory.instance();
-        // ProductDirectory products=ProductDirectory.instance();
-        // SupplierDirectory suppliers=SupplierDirectory.instance();
-        if(checkFile.exists()){
+    public void addSupplier(){
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        do{
             try{
-                if(tOrf("Save data decteced do you want to load it? y/n?")){
-                    FileInputStream file = new FileInputStream("ProdData");
-                    ObjectInputStream input = new ObjectInputStream(file);
-                    input.readObject();
-                    file = new FileInputStream("ClientData");
-                    input = new ObjectInputStream(file);
-                    input.readObject();
-                    file = new FileInputStream("SupData");
-                    input = new ObjectInputStream(file);
-                    input.readObject();
-                }else{
-                    clients = ClientDirectory.instance();
-                    products = ProductDirectory.instance();
-                    suppliers = SupplierDirectory.instance();
+                System.out.println("Enter Supplier name:");
+                String name = reader.readLine();
+                System.out.println("Enter Supplier ID:");
+                int id = Integer.valueOf(reader.readLine());
+                warehouse.addSupplier(name,id);
+                if(!tOrf("Do you want to add another Supplier? y/n?")){
+                    break;
                 }
             }catch(IOException e){
-                e.printStackTrace();
-            }catch(ClassNotFoundException e2){
-                e2.printStackTrace();
+                System.out.println("Supplier entering error "+e);
             }
+        }while(true);
+    }
+    public void addProduct(){
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        do{
+            try{
+                System.out.println("Enter product name:");
+                String name = reader.readLine();
+                System.out.println("Enter product ID:");
+                int id = Integer.valueOf(reader.readLine());
+                warehouse.addProduct(name,id);
+                if(!tOrf("Do you want to add another product? y/n?")){
+                    break;
+                }
+            }catch(IOException e){
+                System.out.println("product entering error "+e);
+            }
+        }while(true);
+    }
+    public void showClients(){
+        Iterator clients = warehouse.getClients();
+        while(clients.hasNext()){
+            System.out.println(clients.next().toString());
         }
+    }
+    public void showProducts(){
+        Iterator products = warehouse.getProducts();
+        while(products.hasNext()){
+            System.out.println(products.next().toString());
+        }
+    }
+    public void showSuppliers(){
+        Iterator suppliers = warehouse.getSuppliers();
+        while(suppliers.hasNext()){
+            System.out.println(suppliers.next().toString());
+        }
+    }
 
+    private static void save(){
+        System.out.println(warehouse.save());
+    }
+
+    private void retrieve() {
+        try {
+          Warehouse tWarehouse = Warehouse.retrieve();
+          if (tWarehouse != null) {
+            System.out.println(" The warehouse has been successfully retrieved from the file WarehouseData \n" );
+            warehouse = tWarehouse;
+          } else {
+            System.out.println("File doesnt exist; creating new library" );
+            warehouse = Warehouse.instance();
+          }
+        } catch(Exception e) {
+          e.printStackTrace();
+        }
+      }
+    public void process(){
         do{
             System.out.println(menu);
             switch(Integer.valueOf(getResponse("Select menu option: "))){
                 case 1://add clients
-                addClient(clients); 
+                addClient(); 
                 break;
                 case 2://add suppliers
                 addSupplier();
@@ -100,11 +151,23 @@ public class Userinterface{
                 case 3://add products
                 addProduct();
                 break;
-                case 4://Load files
+                case 4://Display clients
+                showClients();
                 break;
-                case 5://Save files
+                case 5://Display suppliers
+                showSuppliers();
+                break;
+                case 6://Display products
+                showProducts();
+                break;
+                case 7://save
+                save();
                 break;
             }
         }while(true);
+
+    }
+    public static void main(String[] args) {
+        Userinterface.instance().process();
     }
 }
