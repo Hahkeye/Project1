@@ -3,37 +3,31 @@ package project1;
 import java.util.*;
 import java.io.*;
 
-public class ClientDirectory implements Serializable{
+public class SupplierDirectory implements Serializable{
     private static final long serialVersionUID = 1L;
     private List directory = new LinkedList();
-    private static ClientDirectory cDirectory;
+    private static SupplierDirectory sDirectory ;
 
-    private ClientDirectory(){}
+    private SupplierDirectory(){}
 
-    public static ClientDirectory instance(){
-        if(cDirectory == null){
-            return (cDirectory= new ClientDirectory());
+    public static SupplierDirectory instance(){
+        if(sDirectory == null){
+            return (sDirectory= new SupplierDirectory());
         }
-        return cDirectory;
+        return sDirectory;
     }
 
-    public boolean insert(Client c){
-        this.directory.add(c);
+    public boolean insert(Supplier s){
+        this.directory.add(s);
         return true;
     }
-    public boolean remove(Client c){
-        this.directory.remove(c);
-        return true;
-    }
-    public Iterator getClients(){
+    public Iterator getSuppliers(){
         return directory.iterator();
     }
-
-    public int getCount(){return this.directory.size();}
     private void writeObject(java.io.ObjectOutputStream output){
         try{
             output.defaultWriteObject();
-            output.writeObject(cDirectory);
+            output.writeObject(sDirectory);
         } catch(IOException e){
             System.out.println(e);
         }
@@ -41,18 +35,18 @@ public class ClientDirectory implements Serializable{
     }
     private void readObject(java.io.ObjectInputStream input){
         try{
-            if(cDirectory!=null){
+            if(sDirectory!=null){
                 return;
             }else{
                 input.defaultReadObject();
-                if(cDirectory == null){
-                    cDirectory= (ClientDirectory) input.readObject();
+                if(sDirectory == null){
+                    sDirectory= (SupplierDirectory) input.readObject();
                 }else{
                     input.readObject();
                 }
             }
         }catch(IOException e){
-            System.out.println("problem in client direcoty "+ e);
+            System.out.println("problem in supplier direcoty "+ e);
         }catch(ClassNotFoundException e){
             e.printStackTrace();
         }

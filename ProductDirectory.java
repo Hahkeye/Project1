@@ -1,31 +1,34 @@
-package Project1;
+package project1;
 
 import java.util.*;
 import java.io.*;
 
 public class ProductDirectory implements Serializable{
-    private List<Product> directory = new LinkedList<Product>();
-    private static ProductDirectory productDirectory ;
+    private static final long serialVersionUID = 1L;
+    private List directory = new LinkedList();
+    private static ProductDirectory pDirectory ;
 
     private ProductDirectory(){}
     public static ProductDirectory instance(){
-        if(productDirectory == null){
-            return (productDirectory= new ProductDirectory());
+        if(pDirectory == null){
+            return (pDirectory= new ProductDirectory());
         }
-        return productDirectory;
+        return pDirectory;
     }
 
-    public boolean insertProduct(Product p){
+    public boolean insert(Product p){
         this.directory.add(p);
         return true;
     }
     public Iterator getProducts(){
-        return directory.iterator();
+        return this.directory.iterator();
     }
+    public int getCount(){return this.directory.size();}
+    
     private void writeObject(java.io.ObjectOutputStream output){
         try{
             output.defaultWriteObject();
-            output.writeObject(productDirectory);
+            output.writeObject(pDirectory);
         } catch(IOException e){
             System.out.println(e);
         }
@@ -33,12 +36,12 @@ public class ProductDirectory implements Serializable{
     }
     private void readObject(java.io.ObjectInputStream input){
         try{
-            if(productDirectory!=null){
+            if(pDirectory!=null){
                 return;
             }else{
                 input.defaultReadObject();
-                if(productDirectory == null){
-                    productDirectory= (ProductDirectory) input.readObject();
+                if(pDirectory == null){
+                    pDirectory= (ProductDirectory) input.readObject();
                 }else{
                     input.readObject();
                 }
@@ -50,7 +53,7 @@ public class ProductDirectory implements Serializable{
         }
     }
     public String toString(){
-        return directory.toString();
+        return this.directory.toString();
     }
 
 
