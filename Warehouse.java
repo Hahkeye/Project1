@@ -2,6 +2,7 @@ package project1;
 import java.util.*;
 import java.io.*;
 public class Warehouse implements Serializable{
+    private static final long serialVersionUID = 1L;
     private static Warehouse warehouse;
     private SupplierDirectory suppliers;
     private ClientDirectory clients;
@@ -63,7 +64,7 @@ public class Warehouse implements Serializable{
             e.printStackTrace();
             return false;
         }
-      }
+    }
     private void writeObject(java.io.ObjectOutputStream output) {
         try {
           output.defaultWriteObject();
@@ -71,19 +72,19 @@ public class Warehouse implements Serializable{
         } catch(IOException e) {
           System.out.println(e);
         }
-      }
-      private void readObject(java.io.ObjectInputStream input) {
+    }
+    private void readObject(java.io.ObjectInputStream input) {
         try {
-          input.defaultReadObject();
-          if (warehouse == null) {
-            warehouse = (Warehouse) input.readObject();
-          } else {
-            input.readObject();
-          }
+            input.defaultReadObject();
+            if (warehouse == null) {
+                warehouse = (Warehouse) input.readObject();
+            } else {
+                input.readObject();
+            }
         } catch(IOException e) {
           e.printStackTrace();
         } catch(Exception e) {
           e.printStackTrace();
         }
-      }
+    }
 }

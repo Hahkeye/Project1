@@ -9,13 +9,13 @@ import java.io.*;
 
 public class Userinterface{
     private static Userinterface ui;
-    private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products\n4. Display Clients\n5. Display Suppliers\n6. Display Products\n7. Save data ";
+    private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products\n4. Display Clients\n5. Display Suppliers\n6. Display Products\n7. Save data\n8. Exit ";
     private static Warehouse warehouse;
     private Userinterface(){
         if(tOrf("Use save data? y/n?")){
             retrieve();
         }else{
-            warehouse= Warehouse.instance();
+            warehouse = Warehouse.instance();
         }
 
     }
@@ -101,6 +101,9 @@ public class Userinterface{
             }
         }while(true);
     }
+    public void removeClient(int cID){
+
+    }
     public void showClients(){
         Iterator clients = warehouse.getClients();
         while(clients.hasNext()){
@@ -122,22 +125,23 @@ public class Userinterface{
 
     private static void save(){
         System.out.println(warehouse.save());
+        System.out.println("The data has been saved.");
     }
 
     private void retrieve() {
         try {
-          Warehouse tWarehouse = Warehouse.retrieve();
-          if (tWarehouse != null) {
-            System.out.println(" The warehouse has been successfully retrieved from the file WarehouseData \n" );
-            warehouse = tWarehouse;
-          } else {
-            System.out.println("File doesnt exist; creating new library" );
-            warehouse = Warehouse.instance();
-          }
+            Warehouse tWarehouse = Warehouse.retrieve();
+            if (tWarehouse != null) {
+                System.out.println(" The warehouse has been successfully retrieved from the file WarehouseData \n" );
+                warehouse = tWarehouse;
+            }else{
+                System.out.println("File doesnt exist; creating new library" );
+                warehouse = Warehouse.instance();
+            }
         } catch(Exception e) {
-          e.printStackTrace();
+            e.printStackTrace();
         }
-      }
+    }
     public void process(){
         do{
             System.out.println(menu);
@@ -163,6 +167,8 @@ public class Userinterface{
                 case 7://save
                 save();
                 break;
+                case 8:
+                System.exit(0);
             }
         }while(true);
 
