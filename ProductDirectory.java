@@ -1,10 +1,11 @@
-package Project1;
+package project1;
 
 import java.util.*;
 import java.io.*;
 
 public class ProductDirectory implements Serializable{
-    private List<Product> directory = new LinkedList<Product>();
+    private static final long serialVersionUID = 1L;
+    private List directory = new LinkedList();
     private static ProductDirectory pDirectory ;
 
     private ProductDirectory(){}
@@ -15,13 +16,15 @@ public class ProductDirectory implements Serializable{
         return pDirectory;
     }
 
-    public boolean insertProduct(Product p){
+    public boolean insert(Product p){
         this.directory.add(p);
         return true;
     }
     public Iterator getProducts(){
-        return directory.iterator();
+        return this.directory.iterator();
     }
+    public int getCount(){return this.directory.size();}
+    
     private void writeObject(java.io.ObjectOutputStream output){
         try{
             output.defaultWriteObject();
@@ -50,7 +53,7 @@ public class ProductDirectory implements Serializable{
         }
     }
     public String toString(){
-        return directory.toString();
+        return this.directory.toString();
     }
 
 
