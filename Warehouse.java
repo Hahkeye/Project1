@@ -37,8 +37,9 @@ public class Warehouse implements Serializable{
     public void addProduct(String name,int ID){
         this.products.insert(new Product(name,ID));
     } 
-
-
+    public boolean sExists(int sID){
+        return this.suppliers.exists(sID);
+    }
 
     public static Warehouse retrieve(){
         try {

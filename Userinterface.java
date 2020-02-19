@@ -101,7 +101,12 @@ public class Userinterface{
             }
         }while(true);
     }
-    public void removeClient(int cID){
+    public void removeSupplier(int sID){
+        do{
+            if(warehouse.sExists(sID)){
+                
+            }
+        }while(true);
 
     }
     public void showClients(){

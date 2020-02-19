@@ -24,6 +24,15 @@ public class SupplierDirectory implements Serializable{
     public Iterator getSuppliers(){
         return directory.iterator();
     }
+    public boolean exists(int sID){
+        Iterator it = directory.iterator();
+        while(it.hasNext()){
+            if((Supplier)it.next().getID()==sID){
+                return true;
+            }
+        }
+        return false;
+    }
     private void writeObject(java.io.ObjectOutputStream output){
         try{
             output.defaultWriteObject();
