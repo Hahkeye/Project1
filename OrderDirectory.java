@@ -3,51 +3,51 @@ package project1;
 import java.util.*;
 import java.io.*;
 
-public class ClientDirectory implements Serializable{
+public class OrderDirectory implements Serializable{
     private static final long serialVersionUID = 1L;
     private List directory = new LinkedList();
-    private static ClientDirectory cDirectory;
+    private static OrderDirectory oDirectory;
 
-    private ClientDirectory(){}
+    private OrderDirectory(){}
 
-    public static ClientDirectory instance(){
-        if(cDirectory == null){
-            return (cDirectory= new ClientDirectory());
+    public static OrderDirectory instance(){
+        if(oDirectory == null){
+            return (oDirectory= new OrderDirectory());
         }
-        return cDirectory;
+        return oDirectory;
     }
 
-    public Client contains(int cID){
+    public Order contains(int oID){
         Iterator it = directory.iterator();
         while(it.hasNext()){
-            Client temp = (Client)it.next();
-            if(temp.getID()==cID){
+            Order temp = (Order)it.next();
+            if(temp.getID()==oID){
                 return temp;
             }
         }
         return null;
     }
-    public Client getClient(int cId){
-        if(contains(cId)){
+    public Order getOrder(int oID){
+        if(contains(oID)){
             Iterator it = directory.iterator();
             while(it.hasNext()){
-                Client temp = (Client)it.next();
-                if(temp.getID()==cId){
+                Order temp = (Order)it.next();
+                if(temp.getID()==oID){
                     return temp;
                 }
             }
         }
         return null;
     }
-    public boolean insert(Client c){
-        this.directory.add(c);
+    public boolean insert(Order o){
+        this.directory.add(o);
         return true;
     }
-    public boolean remove(Client c){
-        this.directory.remove(c);
+    public boolean remove(Order o){
+        this.directory.remove(o);
         return true;
     }
-    public Iterator getClients(){
+    public Iterator getOrders(){
         return directory.iterator();
     }
 
@@ -55,7 +55,7 @@ public class ClientDirectory implements Serializable{
     private void writeObject(java.io.ObjectOutputStream output){
         try{
             output.defaultWriteObject();
-            output.writeObject(cDirectory);
+            output.writeObject(oDirectory);
         } catch(IOException e){
             System.out.println(e);
         }
@@ -63,12 +63,12 @@ public class ClientDirectory implements Serializable{
     }
     private void readObject(java.io.ObjectInputStream input){
         try{
-            if(cDirectory!=null){
+            if(oDirectory!=null){
                 return;
             }else{
                 input.defaultReadObject();
-                if(cDirectory == null){
-                    cDirectory= (ClientDirectory) input.readObject();
+                if(oDirectory == null){
+                    oDirectory= (OrderDirectory) input.readObject();
                 }else{
                     input.readObject();
                 }
