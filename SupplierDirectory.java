@@ -24,7 +24,7 @@ public class SupplierDirectory implements Serializable{
     public Iterator getSuppliers(){
         return directory.iterator();
     }
-    public Supplier exists(int sID){
+    public Supplier contains(int sID){
         Iterator it = directory.iterator();
         while(it.hasNext()){
             Supplier temp = (Supplier)it.next();

@@ -15,7 +15,7 @@ public class ProductDirectory implements Serializable{
         }
         return pDirectory;
     }
-    public Product exists(int pID){
+    public Product contains(int pID){
         Iterator it = directory.iterator();
         while(it.hasNext()){
             Product temp = (Product)it.next();

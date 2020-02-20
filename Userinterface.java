@@ -1,16 +1,12 @@
 package project1;
 
 import java.util.*;
-
-//import jdk.internal.jline.internal.InputStreamReader;
-
-//import java.beans.PropertyDescriptor;
 import java.io.*;
 
 public class Userinterface{
     private static Userinterface ui;
     private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products"+
-    "\n4. Add to order\n5. Display Clients\n6. Display Suppliers\n7. Display Products"+
+    "\n4. Add to Shopping cart\n5. Display Clients\n6. Display Suppliers\n7. Display Products"+
     "\n8. Save data\n9. Exit\n10. populate database";
     private static Warehouse warehouse;
     private Userinterface(){
@@ -51,27 +47,21 @@ public class Userinterface{
         }
         return false;
     }
-    public void addToOrder(){
-        Client tempc;
-        Product tempp;
+    public void addToShoppingCart(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try{
-            System.out.println("Enter Client ID");
-            int id = Integer.valueOf(reader.readLine());
-            tempc=warehouse.cExists(id);
-            if(tempc!=null){
-                System.out.println("Client "+id+" selected");
-                System.out.println("Enter product ID: ");
-                int pId=Integer.valueOf(reader.readLine());
-                tempp=warehouse.pExists(pId);
-                System.out.println("Enter quanity of product: ");
-                int quan=Integer.valueOf(reader.readLine());
-                if(tempp!=null){
-                    tempc.addProduct(tempp,quan);
-                }                
+            System.out.println("Enter Client ID: ");
+            int cid = Integer.valueOf(reader.readLine());
+            System.out.println("Enter Product ID: ");
+            int pid = Integer.valueOf(reader.readLine());
+            System.out.println("Enter desired quanity: ");
+            int quanity = Integer.valueOf(reader.readLine());
+            if(warehouse.addToOrder(cid,pid,quanity)){
+                System.out.println("Successfully added to shopping cart.");
             }else{
-                System.out.println("Client ID not found please try again.");
+                System.out.println("Failed to add to shopping cart");
             }
+            //reader.close();
         }catch(IOException e){
             System.out.println(e);
         }
@@ -88,11 +78,11 @@ public class Userinterface{
                 if(!tOrf("Do you want to add another Client? y/n?")){
                     break;
                 }
+                //reader.close();
             }catch(IOException e){
                 System.out.println("client entering error "+e);
             }
         }while(true);
-        reader.close();
     }
     public void addSupplier(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -106,11 +96,11 @@ public class Userinterface{
                 if(!tOrf("Do you want to add another Supplier? y/n?")){
                     break;
                 }
+                //reader.close();
             }catch(IOException e){
                 System.out.println("Supplier entering error "+e);
             }
         }while(true);
-        reader.close();
     }
     public void addProduct(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -124,11 +114,11 @@ public class Userinterface{
                 if(!tOrf("Do you want to add another product? y/n?")){
                     break;
                 }
+                //reader.close();
             }catch(IOException e){
                 System.out.println("product entering error "+e);
             }
         }while(true);
-        reader.close();
     }
     public void removeSupplier(int sID){
         do{
@@ -206,7 +196,7 @@ public class Userinterface{
                 addProduct();
                 break;
                 case 4://addToOrder
-                addToOrder();
+                addToShoppingCart();
                 break;
                 case 5://Display clients
                 showClients();

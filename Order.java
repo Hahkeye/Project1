@@ -5,7 +5,8 @@ import java.io.*;
 import java.lang.invoke.VarHandle.AccessMode;
 
 public class Order implements Serializable{
-    private List<Map.Entry<Product,Integer>> manifest;
+    private static final long serialVersionUID = 1L;
+    private List<Map.Entry<Product, Integer>> manifest;
     private Client orderOwner;
     private double orderTotal;
 

@@ -7,11 +7,15 @@ public class Warehouse implements Serializable{
     private SupplierDirectory suppliers;
     private ClientDirectory clients;
     private ProductDirectory products;
+    private OrderDirectory orders;
+    
     private Warehouse(){
         suppliers=SupplierDirectory.instance();
         clients=ClientDirectory.instance();
         products=ProductDirectory.instance();
+        
     }
+
     public static Warehouse instance(){
         if(warehouse==null){
             return(warehouse=new Warehouse());
@@ -29,7 +33,10 @@ public class Warehouse implements Serializable{
         return this.products.getProducts();
     }
     public Client getClient(int cID){
-        return clients.getClient(cId);
+        return this.clients.getClient(cId);
+    }
+    public Iterator getOrders(){
+        return this.orders.getOrders();
     }
     public void addClient(String name,int ID){
         this.clients.insert(new Client(name,ID));
@@ -39,7 +46,14 @@ public class Warehouse implements Serializable{
     }
     public void addProduct(String name,int ID){
         this.products.insert(new Product(name,ID));
-    } 
+    }
+    public boolean addToOrder(int cid,int pid,int quan){
+        if(clients.contains(cid)!=null){
+            warehouse.clients.contains(cid).addProduct(products.contains(pid),quan);
+            return true;
+        }
+        return false;
+    }
     public Supplier sExists(int sID){
         return this.suppliers.exists(sID);
     }
