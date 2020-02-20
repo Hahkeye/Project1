@@ -10,8 +10,10 @@ public class Product implements Serializable{
     private int stockCount;
     private double price;
 
-    public Product(String name){
+    public Product(String name,int count,double price){
         this.name=name;
+        this.stockCount=count;
+        this.price=price;
         this.ID=IdServer.instance().getpid();
     }
     public Product(String name, String description, int id, int sCount, double price,int supplierID){

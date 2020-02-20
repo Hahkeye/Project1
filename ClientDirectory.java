@@ -43,9 +43,12 @@ public class ClientDirectory implements Serializable{
         this.directory.add(c);
         return true;
     }
-    public boolean remove(Client c){
-        this.directory.remove(c);
-        return true;
+    public boolean remove(int c){
+        if(contains(c)!=null){
+            this.directory.remove(contains(c));
+            return true;
+        }
+        return false;
     }
     public Iterator getClients(){
         return directory.iterator();

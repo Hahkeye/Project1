@@ -46,8 +46,8 @@ public class Warehouse implements Serializable{
     public void addSupplier(String name){
         this.suppliers.insert(new Supplier(name));
     }
-    public void addProduct(String name){
-        this.products.insert(new Product(name));
+    public void addProduct(String name,int count,double price){
+        this.products.insert(new Product(name,count,price));
     }
     public void adjustProduct(int pId,int count){
         if(this.products.contains(pId)){
@@ -55,6 +55,42 @@ public class Warehouse implements Serializable{
             break;
         }
         System.out.println("failed");
+    }
+    public boolean processOrder(int cid){
+        Client temp = clients.contains(cid);
+        Double deduc = 0.0;
+        if(temp!=null){
+            Iterator it=temp.getCart();
+            while(it.hasNext()){
+                AbstractMap.SimpleEntry<Product,Integer> ent = (AbstractMap.SimpleEntry<Product,Integer>)it.next();
+                if(ent.getKey().getStockCount()>=ent.getValue()){
+                    ent.getKey().adjustCount(-ent.getValue());
+                    deduc-=ent.getKey().getPrice();
+                    it.remove();
+                }else{
+                    System.out.println("Not enough product to satisfiy order. adding to waitlist");
+                }
+            }
+        }else{
+            return false;
+        }
+        temp.adjustBalance(deduc);
+        return true;
+    }
+    public boolean remove(String s,int id){
+        boolean result=false;
+        switch(s){
+            case "c":
+            result= warehouse.clients.remove(id);
+            break;
+            case "s":
+            result=  warehouse.suppliers.remove(id);
+            break;
+            case "p":
+            result= warehouse.products.remove(id);
+            break;
+        }
+        return result;
     }
     public boolean addToOrder(int cid,int pid,int quan){
         if(clients.contains(cid)!=null){

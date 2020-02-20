@@ -30,6 +30,13 @@ public class ProductDirectory implements Serializable{
         this.directory.add(p);
         return true;
     }
+    public boolean remove(int pid){
+        if(contains(pid)!=null){
+            directory.remove(contains(pid));
+            return true;
+        }
+        return false;
+    }
     public Iterator getProducts(){
         return this.directory.iterator();
     }

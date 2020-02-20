@@ -7,7 +7,7 @@ public class Userinterface{
     private static Userinterface ui;
     private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products"+
     "\n4. Add to Shopping cart\n5. Display Clients\n6. Display Suppliers\n7. Display Products"+
-    "\n8. Save data\n9. Exit\n10. populate database\n11. Process Order";
+    "\n8. Save data\n9. Exit\n10. populate database\n11. Process Order\n12. Remove something";
     private static Warehouse warehouse;
     private Userinterface(){
         if(tOrf("Use save data? y/n?")){
@@ -47,14 +47,25 @@ public class Userinterface{
         }
         return false;
     }
+    public void remove(){
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        try{
+            System.out.println("What would you like to remove?(c,p,s)");
+            String choice = reader.readLine();
+            System.out.println("What is the ID of this?");
+            int id = Integer.valueOf(reader.readLine());
+            System.out.println(warehouse.remove(choice, id));
+        }catch(IOException e){
+            System.out.println(e);
+        }
+    }
     public void processOrder(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try{
             System.out.println("Enter Client ID:");
             int cid= Integer.valueOf(reader.readLine());
-            //get the  entire cart and print it to the screen then  process the order and take the stock count out of each item.
-
-        }catch(IOError e){
+            System.out.println(warehouse.processOrder(cid));
+        }catch(IOException e){
             System.out.println(e);
         }
     }
@@ -119,9 +130,11 @@ public class Userinterface{
             try{
                 System.out.println("Enter product name:");
                 String name = reader.readLine();
-                // System.out.println("Enter product ID:");
-                // int id = Integer.valueOf(reader.readLine());
-                warehouse.addProduct(name);
+                System.out.println("Enter product stock count:");
+                int id = Integer.valueOf(reader.readLine());
+                System.out.println("Enter product price(as a double):");
+                double price=Double.valueOf(reader.readLine());
+                warehouse.addProduct(name,id,price);
                 if(!tOrf("Do you want to add another product? y/n?")){
                     break;
                 }
@@ -173,11 +186,11 @@ public class Userinterface{
         warehouse.addSupplier("Supplier3");
         warehouse.addSupplier("Supplier4");
         warehouse.addSupplier("Supplier5");
-        warehouse.addProduct("Product1");
-        warehouse.addProduct("Product2");
-        warehouse.addProduct("Product3");
-        warehouse.addProduct("Product4");
-        warehouse.addProduct("Product5");
+        warehouse.addProduct("Product1",4,4.0);
+        warehouse.addProduct("Product2",7,2.0);
+        warehouse.addProduct("Product3",9,1.0);
+        warehouse.addProduct("Product4",8,5.0);
+        warehouse.addProduct("Product5",1,7.0);
     }
     private void retrieve() {
         try {
@@ -226,6 +239,12 @@ public class Userinterface{
                 break;
                 case 10://populate db
                 populateDb();
+                break;
+                case 11://process order
+                processOrder();
+                break;
+                case 12:
+                remove();
                 break;
             }
         }while(true);

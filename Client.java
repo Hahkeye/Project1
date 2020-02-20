@@ -25,6 +25,7 @@ public class Client implements Serializable{
     public String getName(){return this.name;}
     public String getAddress(){return this.address;}
     public double getBalance(){return this.balance;}
+    public Iterator getCart(){return this.cart.iterator();}
     public AbstractMap.SimpleEntry<Product,Integer> contains(int p){
         Iterator it = cart.iterator();
         while(it.hasNext()){
@@ -35,7 +36,7 @@ public class Client implements Serializable{
         }
         return null;
     }
-    public AbstractMap.SimpleEntry<Product,Integer> contains(Product p){
+    public AbstractMap.SimpleEntry<Product,Integer> contains(Product p){//depreciated
         Iterator it = cart.iterator();
         while(it.hasNext()){
             AbstractMap.SimpleEntry<Product,Integer> temp= (AbstractMap.SimpleEntry<Product,Integer>) it.next();
