@@ -48,109 +48,57 @@ public class Userinterface{
         return false;
     }
     public void remove(){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        try{
-            System.out.println("What would you like to remove?(c,p,s)");
-            String choice = reader.readLine();
-            System.out.println("What is the ID of this?");
-            int id = Integer.valueOf(reader.readLine());
-            System.out.println(warehouse.remove(choice, id));
-        }catch(IOException e){
-            System.out.println(e);
-        }
+        String choice = getResponse("What would you like to remove?(c,p,s)");
+        int id = Integer.valueOf(getResponse("What is the Id of this?:"));
+        System.out.println(warehouse.remove(choice, id));
     }
     public void processOrder(){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        try{
-            System.out.println("Enter Client ID:");
-            int cid= Integer.valueOf(reader.readLine());
-            System.out.println(warehouse.processOrder(cid));
-        }catch(IOException e){
-            System.out.println(e);
-        }
+        int cid = Integer.valueOf(getResponse("Enter client ID: "));
+        System.out.println(warehouse.processOrder(cid));
     }
     public void addToShoppingCart(){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        try{
-            System.out.println("Enter Client ID: ");
-            int cid = Integer.valueOf(reader.readLine());
-            System.out.println("Enter Product ID: ");
-            int pid = Integer.valueOf(reader.readLine());
-            System.out.println("Enter desired quanity: ");
-            int quanity = Integer.valueOf(reader.readLine());
+        do{
+            int cid = Integer.valueOf(getResponse("Enter the Client ID:"));
+            int pid = Integer.valueOf(getResponse("Enter the product ID:"));
+            int quanity = Integer.valueOf(getResponse("Enter desired quanity: "));
             if(warehouse.addToOrder(cid,pid,quanity)){
                 System.out.println("Successfully added to shopping cart.");
             }else{
                 System.out.println("Failed to add to shopping cart");
             }
-            //reader.close();
-        }catch(IOException e){
-            System.out.println(e);
-        }
+            if(!tOrf("Do you want to add another item to shopping cart? y/n?")){
+                break;
+            }
+        }while(true);
     }
     public void addClient(){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         do{
-            try{
-                System.out.println("Enter Client name:");
-                String name = reader.readLine();
-                // System.out.println("Enter Client ID:");
-                // int id = Integer.valueOf(reader.readLine());
-                warehouse.addClient(name);
-                if(!tOrf("Do you want to add another Client? y/n?")){
-                    break;
-                }
-                //reader.close();
-            }catch(IOException e){
-                System.out.println("client entering error "+e);
+            String name = getResponse("Enter name:");
+            warehouse.addClient(name);
+            if(!tOrf("Do you want to add another Client? y/n?")){
+                break;
             }
         }while(true);
     }
     public void addSupplier(){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         do{
-            try{
-                System.out.println("Enter Supplier name:");
-                String name = reader.readLine();
-                // System.out.println("Enter Supplier ID:");
-                // int id = Integer.valueOf(reader.readLine());
-                warehouse.addSupplier(name);
-                if(!tOrf("Do you want to add another Supplier? y/n?")){
-                    break;
-                }
-                //reader.close();
-            }catch(IOException e){
-                System.out.println("Supplier entering error "+e);
+            String name = getResponse("Enter Supplier name:");
+            warehouse.addSupplier(name);
+            if(!tOrf("Do you want to add another supplier? y/n?")){
+                break;
             }
         }while(true);
     }
     public void addProduct(){
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         do{
-            try{
-                System.out.println("Enter product name:");
-                String name = reader.readLine();
-                System.out.println("Enter product stock count:");
-                int id = Integer.valueOf(reader.readLine());
-                System.out.println("Enter product price(as a double):");
-                double price=Double.valueOf(reader.readLine());
-                warehouse.addProduct(name,id,price);
-                if(!tOrf("Do you want to add another product? y/n?")){
-                    break;
-                }
-                //reader.close();
-            }catch(IOException e){
-                System.out.println("product entering error "+e);
+            String name = getResponse("Enter product name:");
+            int count = Integer.valueOf(getResponse("Enter Product Stock count: "));
+            double price = Double.valueOf(getResponse("Enter product price: "));
+            warehouse.addProduct(name, count, price);
+            if(!tOrf("Do you want to add another product? y/n?")){
+                break;
             }
         }while(true);
-    }
-    public void removeSupplier(int sID){
-        do{
-            if(warehouse.sExists(sID)!=null){
-                
-            }
-        }while(true);
-
     }
     public void showClients(){
         Iterator clients = warehouse.getClients();
