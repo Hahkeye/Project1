@@ -72,9 +72,9 @@ public class Userinterface{
             try{
                 System.out.println("Enter Client name:");
                 String name = reader.readLine();
-                System.out.println("Enter Client ID:");
-                int id = Integer.valueOf(reader.readLine());
-                warehouse.addClient(name,id);
+                // System.out.println("Enter Client ID:");
+                // int id = Integer.valueOf(reader.readLine());
+                warehouse.addClient(name);
                 if(!tOrf("Do you want to add another Client? y/n?")){
                     break;
                 }
@@ -90,9 +90,9 @@ public class Userinterface{
             try{
                 System.out.println("Enter Supplier name:");
                 String name = reader.readLine();
-                System.out.println("Enter Supplier ID:");
-                int id = Integer.valueOf(reader.readLine());
-                warehouse.addSupplier(name,id);
+                // System.out.println("Enter Supplier ID:");
+                // int id = Integer.valueOf(reader.readLine());
+                warehouse.addSupplier(name);
                 if(!tOrf("Do you want to add another Supplier? y/n?")){
                     break;
                 }
@@ -108,9 +108,9 @@ public class Userinterface{
             try{
                 System.out.println("Enter product name:");
                 String name = reader.readLine();
-                System.out.println("Enter product ID:");
-                int id = Integer.valueOf(reader.readLine());
-                warehouse.addProduct(name,id);
+                // System.out.println("Enter product ID:");
+                // int id = Integer.valueOf(reader.readLine());
+                warehouse.addProduct(name);
                 if(!tOrf("Do you want to add another product? y/n?")){
                     break;
                 }
@@ -152,21 +152,21 @@ public class Userinterface{
         System.out.println("The data has been saved.");
     }
     public void populateDb(){
-        warehouse.addClient("client1", 1);
-        warehouse.addClient("client2", 2);
-        warehouse.addClient("client3", 3);
-        warehouse.addClient("client4", 4);
-        warehouse.addClient("client5", 5);
-        warehouse.addSupplier("Supplier1", 1);
-        warehouse.addSupplier("Supplier2", 2);
-        warehouse.addSupplier("Supplier3", 3);
-        warehouse.addSupplier("Supplier4", 4);
-        warehouse.addSupplier("Supplier5", 5);
-        warehouse.addProduct("Product1", 1);
-        warehouse.addProduct("Product2", 2);
-        warehouse.addProduct("Product3", 3);
-        warehouse.addProduct("Product4", 4);
-        warehouse.addProduct("Product5", 5);
+        warehouse.addClient("client1");
+        warehouse.addClient("client2");
+        warehouse.addClient("client3");
+        warehouse.addClient("client4");
+        warehouse.addClient("client5");
+        warehouse.addSupplier("Supplier1");
+        warehouse.addSupplier("Supplier2");
+        warehouse.addSupplier("Supplier3");
+        warehouse.addSupplier("Supplier4");
+        warehouse.addSupplier("Supplier5");
+        warehouse.addProduct("Product1");
+        warehouse.addProduct("Product2");
+        warehouse.addProduct("Product3");
+        warehouse.addProduct("Product4");
+        warehouse.addProduct("Product5");
     }
     private void retrieve() {
         try {

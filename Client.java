@@ -10,12 +10,15 @@ public class Client implements Serializable{
     private String name;
     private double balance;
     private List<Map.Entry<Product,Integer>> cart;
+    private List orders;
 
-    public Client(String name,int id){
+
+    public Client(String name){
         this.name=name;
-        this.ID=id;
+        this.ID=(IdServer.instance()).getcid();
         this.balance=0.0;
         this.cart = new LinkedList<>();
+        this.orders=new LinkedList();
     }
 
     public int getID(){return this.ID;}

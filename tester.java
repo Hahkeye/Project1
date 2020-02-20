@@ -25,7 +25,7 @@ public class tester{
 
         //SupplierDirectory suppiers = SupplierDirectory.instance();
         Product p1 = new Product("test product","test description",34,4,32.32,2234);
-        Client c1= new Client("jeff",1);
+        Client c1= new Client("jeff");
         Order o1 = new Order(c1,10.00);
         ClientDirectory clients= ClientDirectory.instance();
         ProductDirectory products= ProductDirectory.instance();
