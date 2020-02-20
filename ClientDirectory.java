@@ -17,6 +17,28 @@ public class ClientDirectory implements Serializable{
         return cDirectory;
     }
 
+    public Client exists(int cID){
+        Iterator it = directory.iterator();
+        while(it.hasNext()){
+            Client temp = (Client)it.next();
+            if(temp.getID()==cID){
+                return temp;
+            }
+        }
+        return null;
+    }
+    public Client getClient(int cId){
+        if(exists(cId)){
+            Iterator it = directory.iterator();
+            while(it.hasNext()){
+                Client temp = (Client)it.next();
+                if(temp.getID()==cID){
+                    return temp;
+                }
+            }
+        }
+        return null;
+    }
     public boolean insert(Client c){
         this.directory.add(c);
         return true;

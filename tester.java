@@ -1,7 +1,7 @@
 package project1;
 
 import java.io.*;
-
+import java.util.*;
 import javax.lang.model.element.QualifiedNameable;
 
 public class tester{
@@ -27,52 +27,22 @@ public class tester{
         Product p1 = new Product("test product","test description",34,4,32.32,2234);
         Client c1= new Client("jeff",1);
         Order o1 = new Order(c1,10.00);
-        if(question("Do you want to load? y/n?")){
-            try {
-                FileInputStream file1 = new FileInputStream("ProdData");
-                // FileInputStream file2 = new FileInputStream("ClientData");
-                ObjectInputStream input = new ObjectInputStream(file1);
-                input.readObject(); 
-                // input = new ObjectInputStream(file2);
-                // input.readObject();
-                input.close();
-            } catch(IOException ioe) {
-                ioe.printStackTrace();
-                 
-            } catch(ClassNotFoundException cnfe) {
-                cnfe.printStackTrace();
-                 
-            }
-        }
         ClientDirectory clients= ClientDirectory.instance();
         ProductDirectory products= ProductDirectory.instance();
-        System.out.println(products.getProductCount());
-        System.out.println(clients.getClientCount());
-        // System.out.println(clients.getClientCount());
-        products.insertProduct(p1);
-        clients.insertClient(c1);
-        // clients.insertClient(c1);
-        System.out.println(products.getProductCount());
-        System.out.println(clients.getClientCount());
-        // System.out.println(clients.getClientCount());
-
-
+        products.insert(p1);
+        clients.insert(c1);
+        o1.add(p1, 4);
+        c1.addProduct(p1, 2);
+        System.out.println(c1.toString( ));
+        System.out.println(o1.toString());
+        System.out.println(o1.contains(p1));
+        o1.remove(p1);
+        System.out.println(o1.contains(p1));
+        System.out.println(o1.toString());
 
 
 
         Boolean answer2 = question("Do you want to save? y/n?");
-        if(answer2){
-            try {
-                FileOutputStream file = new FileOutputStream("ProdData");
-                // FileOutputStream file2 = new FileOutputStream("ClientData");
-                ObjectOutputStream output = new ObjectOutputStream(file);
-                // ObjectOutputStream output2 = new ObjectOutputStream(file2);
-                output.writeObject(products);
-                // output2.writeObject(clients);
-                output.close();
-            } catch(IOException ioe) {
-                ioe.printStackTrace();
-            } 
-        }
+       
     }
 }

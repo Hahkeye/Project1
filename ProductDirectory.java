@@ -15,6 +15,16 @@ public class ProductDirectory implements Serializable{
         }
         return pDirectory;
     }
+    public Product exists(int pID){
+        Iterator it = directory.iterator();
+        while(it.hasNext()){
+            Product temp = (Product)it.next();
+            if(temp.getID()==pID){
+                return temp;
+            }
+        }
+        return null;
+    }
 
     public boolean insert(Product p){
         this.directory.add(p);

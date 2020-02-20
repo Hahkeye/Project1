@@ -9,7 +9,9 @@ import java.io.*;
 
 public class Userinterface{
     private static Userinterface ui;
-    private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products\n4. Display Clients\n5. Display Suppliers\n6. Display Products\n7. Save data\n8. Exit ";
+    private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products"+
+    "\n4. Add to order\n5. Display Clients\n6. Display Suppliers\n7. Display Products"+
+    "\n8. Save data\n9. Exit\n10. populate database";
     private static Warehouse warehouse;
     private Userinterface(){
         if(tOrf("Use save data? y/n?")){
@@ -49,6 +51,31 @@ public class Userinterface{
         }
         return false;
     }
+    public void addToOrder(){
+        Client tempc;
+        Product tempp;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        try{
+            System.out.println("Enter Client ID");
+            int id = Integer.valueOf(reader.readLine());
+            tempc=warehouse.cExists(id);
+            if(tempc!=null){
+                System.out.println("Client "+id+" selected");
+                System.out.println("Enter product ID: ");
+                int pId=Integer.valueOf(reader.readLine());
+                tempp=warehouse.pExists(pId);
+                System.out.println("Enter quanity of product: ");
+                int quan=Integer.valueOf(reader.readLine());
+                if(tempp!=null){
+                    tempc.addProduct(tempp,quan);
+                }                
+            }else{
+                System.out.println("Client ID not found please try again.");
+            }
+        }catch(IOException e){
+            System.out.println(e);
+        }
+    }
     public void addClient(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         do{
@@ -65,7 +92,7 @@ public class Userinterface{
                 System.out.println("client entering error "+e);
             }
         }while(true);
-        
+        reader.close();
     }
     public void addSupplier(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -83,6 +110,7 @@ public class Userinterface{
                 System.out.println("Supplier entering error "+e);
             }
         }while(true);
+        reader.close();
     }
     public void addProduct(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -100,10 +128,11 @@ public class Userinterface{
                 System.out.println("product entering error "+e);
             }
         }while(true);
+        reader.close();
     }
     public void removeSupplier(int sID){
         do{
-            if(warehouse.sExists(sID)){
+            if(warehouse.sExists(sID)!=null){
                 
             }
         }while(true);
@@ -132,7 +161,23 @@ public class Userinterface{
         System.out.println(warehouse.save());
         System.out.println("The data has been saved.");
     }
-
+    public void populateDb(){
+        warehouse.addClient("client1", 1);
+        warehouse.addClient("client2", 2);
+        warehouse.addClient("client3", 3);
+        warehouse.addClient("client4", 4);
+        warehouse.addClient("client5", 5);
+        warehouse.addSupplier("Supplier1", 1);
+        warehouse.addSupplier("Supplier2", 2);
+        warehouse.addSupplier("Supplier3", 3);
+        warehouse.addSupplier("Supplier4", 4);
+        warehouse.addSupplier("Supplier5", 5);
+        warehouse.addProduct("Product1", 1);
+        warehouse.addProduct("Product2", 2);
+        warehouse.addProduct("Product3", 3);
+        warehouse.addProduct("Product4", 4);
+        warehouse.addProduct("Product5", 5);
+    }
     private void retrieve() {
         try {
             Warehouse tWarehouse = Warehouse.retrieve();
@@ -160,20 +205,27 @@ public class Userinterface{
                 case 3://add products
                 addProduct();
                 break;
-                case 4://Display clients
+                case 4://addToOrder
+                addToOrder();
+                break;
+                case 5://Display clients
                 showClients();
                 break;
-                case 5://Display suppliers
+                case 6://Display suppliers
                 showSuppliers();
                 break;
-                case 6://Display products
+                case 7://Display products
                 showProducts();
                 break;
-                case 7://save
+                case 8://save
                 save();
                 break;
-                case 8:
+                case 9://exit
                 System.exit(0);
+                break;
+                case 10://populate db
+                populateDb();
+                break;
             }
         }while(true);
 

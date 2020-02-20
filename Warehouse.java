@@ -28,6 +28,9 @@ public class Warehouse implements Serializable{
     public Iterator getProducts(){
         return this.products.getProducts();
     }
+    public Client getClient(int cID){
+        return clients.getClient(cId);
+    }
     public void addClient(String name,int ID){
         this.clients.insert(new Client(name,ID));
     }
@@ -37,8 +40,14 @@ public class Warehouse implements Serializable{
     public void addProduct(String name,int ID){
         this.products.insert(new Product(name,ID));
     } 
-    public boolean sExists(int sID){
+    public Supplier sExists(int sID){
         return this.suppliers.exists(sID);
+    }
+    public Client cExists(int cID){
+        return this.clients.exists(cID);
+    }
+    public Product pExists(int pID){
+        return this.products.exists(pID);
     }
 
     public static Warehouse retrieve(){
