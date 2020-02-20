@@ -34,6 +34,13 @@ public class SupplierDirectory implements Serializable{
         }
         return null;
     }
+    public boolean remove(int sid){
+        if(contains(sid)!=null){
+            this.directory.remove(contains(sid));
+            return true;
+        }
+        return false;
+    }
     private void writeObject(java.io.ObjectOutputStream output){
         try{
             output.defaultWriteObject();
