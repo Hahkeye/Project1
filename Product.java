@@ -10,9 +10,9 @@ public class Product implements Serializable{
     private int stockCount;
     private double price;
 
-    public Product(String name,int id){
+    public Product(String name){
         this.name=name;
-        this.ID=id;
+        this.ID=IdServer.instance().getpid();
     }
     public Product(String name, String description, int id, int sCount, double price,int supplierID){
         this.name=name;
@@ -41,6 +41,9 @@ public class Product implements Serializable{
     }
     public void setStockCount(int count){
         this.stockCount=count;
+    }
+    public void adjustCount(int adj){
+        this.stockCount+=adj;
     }
     public void setPrice(Double price){
         this.price=price;

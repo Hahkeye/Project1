@@ -7,13 +7,15 @@ public class Warehouse implements Serializable{
     private SupplierDirectory suppliers;
     private ClientDirectory clients;
     private ProductDirectory products;
-    private OrderDirectory orders;
+    //private OrderDirectory orders;
+    //private idServer ids;
     
     private Warehouse(){
         suppliers=SupplierDirectory.instance();
         clients=ClientDirectory.instance();
         products=ProductDirectory.instance();
-        
+        //orders=OrderDirectory.instance();
+        //ids=idServer.instnace();       
     }
 
     public static Warehouse instance(){
@@ -38,14 +40,21 @@ public class Warehouse implements Serializable{
     public Iterator getOrders(){
         return this.orders.getOrders();
     }
-    public void addClient(String name,int ID){
-        this.clients.insert(new Client(name,ID));
+    public void addClient(String name){
+        this.clients.insert(new Client(name));
     }
-    public void addSupplier(String name,int ID){
-        this.suppliers.insert(new Supplier(name,ID));
+    public void addSupplier(String name){
+        this.suppliers.insert(new Supplier(name));
     }
-    public void addProduct(String name,int ID){
-        this.products.insert(new Product(name,ID));
+    public void addProduct(String name){
+        this.products.insert(new Product(name));
+    }
+    public void adjustProduct(int pId,int count){
+        if(this.products.contains(pId)){
+            this.products.contains(pID).adjustProduct(count);
+            break;
+        }
+        System.out.println("failed");
     }
     public boolean addToOrder(int cid,int pid,int quan){
         if(clients.contains(cid)!=null){
@@ -69,6 +78,7 @@ public class Warehouse implements Serializable{
             FileInputStream file = new FileInputStream("WarehouseData");
             ObjectInputStream input = new ObjectInputStream(file);
             input.readObject();
+            IdServer.retrieve(input);
             return warehouse;
         } catch(IOException e) {
             e.printStackTrace();
@@ -83,6 +93,7 @@ public class Warehouse implements Serializable{
             FileOutputStream file = new FileOutputStream("WarehouseData");
             ObjectOutputStream output = new ObjectOutputStream(file);
             output.writeObject(warehouse);
+            output.writeObject(IdServer.instance());
             return true;
         } catch(IOException e) {
             e.printStackTrace();

@@ -7,9 +7,9 @@ public class Supplier implements Serializable{
     private int ID;
     private List items= new LinkedList();
     
-    public Supplier(String name,int id){
+    public Supplier(String name){
         this.name=name;
-        this.ID=id;
+        this.ID=IdServer.instance().getsid();
     }
     public String getName(){return this.name;}
     public int getID(){return this.ID;}
@@ -28,7 +28,7 @@ public class Supplier implements Serializable{
         this.items.remove(p);
     }
     public String toString(){
-        return this.name+"|"+this.items;
+        return this.ID+"|"+this.name+"|"+this.items;
     }
 
 }
