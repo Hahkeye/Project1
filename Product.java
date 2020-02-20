@@ -42,6 +42,9 @@ public class Product implements Serializable{
     public void setStockCount(int count){
         this.stockCount=count;
     }
+    public void adjustCount(int adj){
+        this.stockCount+=adj;
+    }
     public void setPrice(Double price){
         this.price=price;
     }

@@ -7,7 +7,7 @@ public class Userinterface{
     private static Userinterface ui;
     private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products"+
     "\n4. Add to Shopping cart\n5. Display Clients\n6. Display Suppliers\n7. Display Products"+
-    "\n8. Save data\n9. Exit\n10. populate database";
+    "\n8. Save data\n9. Exit\n10. populate database\n11. Process Order";
     private static Warehouse warehouse;
     private Userinterface(){
         if(tOrf("Use save data? y/n?")){
@@ -46,6 +46,17 @@ public class Userinterface{
             return true;
         }
         return false;
+    }
+    public void processOrder(){
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        try{
+            System.out.println("Enter Client ID:");
+            int cid= Integer.valueOf(reader.readLine());
+            //get the  entire cart and print it to the screen then  process the order and take the stock count out of each item.
+
+        }catch(IOError e){
+            System.out.println(e);
+        }
     }
     public void addToShoppingCart(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

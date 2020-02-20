@@ -49,6 +49,13 @@ public class Warehouse implements Serializable{
     public void addProduct(String name){
         this.products.insert(new Product(name));
     }
+    public void adjustProduct(int pId,int count){
+        if(this.products.contains(pId)){
+            this.products.contains(pID).adjustProduct(count);
+            break;
+        }
+        System.out.println("failed");
+    }
     public boolean addToOrder(int cid,int pid,int quan){
         if(clients.contains(cid)!=null){
             warehouse.clients.contains(cid).addProduct(products.contains(pid),quan);
