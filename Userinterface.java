@@ -94,7 +94,8 @@ public class Userinterface{
             String name = getResponse("Enter product name:");
             int count = Integer.valueOf(getResponse("Enter Product Stock count: "));
             double price = Double.valueOf(getResponse("Enter product price: "));
-            warehouse.addProduct(name, count, price);
+            int sid = Integer.valueOf(getResponse("Enter Supplier ID:"));
+            warehouse.addProduct(name, count, price,sid);
             if(!tOrf("Do you want to add another product? y/n?")){
                 break;
             }
@@ -134,11 +135,14 @@ public class Userinterface{
         warehouse.addSupplier("Supplier3");
         warehouse.addSupplier("Supplier4");
         warehouse.addSupplier("Supplier5");
-        warehouse.addProduct("Product1",4,4.0);
-        warehouse.addProduct("Product2",7,2.0);
-        warehouse.addProduct("Product3",9,1.0);
-        warehouse.addProduct("Product4",8,5.0);
-        warehouse.addProduct("Product5",1,7.0);
+        warehouse.addProduct("Product1",4,4.0,1);
+        warehouse.addProduct("Product2",7,2.0,2);
+        warehouse.addProduct("Product3",9,1.0,3);
+        warehouse.addProduct("Product4",8,5.0,4);
+        warehouse.addProduct("Product5",1,7.0,1);
+        warehouse.addProduct("Product6",1,7.0,2);
+        warehouse.addProduct("Product7",1,7.0,3);
+        warehouse.addProduct("Product8",1,7.0,4);
     }
     private void retrieve() {
         try {

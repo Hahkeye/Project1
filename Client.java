@@ -10,7 +10,8 @@ public class Client implements Serializable{
     private String name;
     private double balance;
     private List<Map.Entry<Product,Integer>> cart;
-    private List orders;
+    private List transactionList;
+    private List<Map.Entry<Product,Integer>> waitlist;
 
 
     public Client(String name){
@@ -18,7 +19,7 @@ public class Client implements Serializable{
         this.ID=(IdServer.instance()).getcid();
         this.balance=0.0;
         this.cart = new LinkedList<>();
-        this.orders=new LinkedList();
+        this.transactionList=new LinkedList();
     }
 
     public int getID(){return this.ID;}
@@ -26,6 +27,7 @@ public class Client implements Serializable{
     public String getAddress(){return this.address;}
     public double getBalance(){return this.balance;}
     public Iterator getCart(){return this.cart.iterator();}
+    public Iterator getTransactions(){return this.transactionList.iterator();}
     public AbstractMap.SimpleEntry<Product,Integer> contains(int p){
         Iterator it = cart.iterator();
         while(it.hasNext()){
@@ -45,6 +47,28 @@ public class Client implements Serializable{
             }
         }
         return null;
+    }
+    public boolean processOrder(){//fix to return order
+        if(cart.size()!=0){
+            Double deduc = 0.0;
+            Iterator it=getCart();
+            while(it.hasNext()){
+                AbstractMap.SimpleEntry<Product,Integer> ent = (AbstractMap.SimpleEntry<Product,Integer>)it.next();
+                if(ent.getKey()==null){return false;}
+                if(ent.getKey().getStockCount()>=ent.getValue()){
+                    ent.getKey().adjustCount(-ent.getValue());
+                    deduc-=ent.getKey().getPrice();
+                    it.remove();
+                }else{
+                    System.out.println("Not enough product to satisfiy order. adding to waitlist");
+                    this.waitlist.add(new AbstractMap.SimpleEntry<>(ent.getKey(),ent.getValue()));
+                }
+            }
+            transactionList.add("Order for: "+deduc);
+            adjustBalance(deduc);
+            return true;
+        }
+        return false;
     }
     public void addProduct(Product p,int quaity){
         AbstractMap.SimpleEntry<Product,Integer> temp = contains(p);
