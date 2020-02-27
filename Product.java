@@ -3,14 +3,28 @@ import java.io.*;
 import java.util.*;
 
 public class Product implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String name;
     private String description;
-    private int supplier;
+    private Supplier supplier;
     private int ID;
     private int stockCount;
     private double price;
 
     public Product(String name,int count,double price){
+        this.name=name;
+        this.stockCount=count;
+        this.price=price;
+        this.ID=IdServer.instance().getpid();
+    }
+    public Product(String name,int count,double price,Supplier s){
+        this.name=name; 
+        this.stockCount=count;
+        this.price=price;
+        this.supplier=s;
+        this.ID=IdServer.instance().getpid();
+    }
+    public Product(String name,int count,double price,int sid){
         this.name=name;
         this.stockCount=count;
         this.price=price;
@@ -55,7 +69,7 @@ public class Product implements Serializable{
     }
 
     public String toString(){
-        return this.name+"|"+this.description+"|"+this.ID+"|"+this.stockCount+"|"+this.price+"|";
+        return this.name+"|"+this.description+"|"+this.ID+"|"+this.stockCount+"|"+this.price+"|"+this.supplier.getName();
     }
 
 }

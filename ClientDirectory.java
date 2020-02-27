@@ -28,7 +28,7 @@ public class ClientDirectory implements Serializable{
         return null;
     }
     public Client getClient(int cId){
-        if(contains(cId)){
+        if(contains(cId)!=null){
             Iterator it = directory.iterator();
             while(it.hasNext()){
                 Client temp = (Client)it.next();
@@ -38,6 +38,15 @@ public class ClientDirectory implements Serializable{
             }
         }
         return null;
+    }
+    public void withBalance(){
+        Iterator it = directory.iterator();
+        while(it.hasNext()){
+            Client temp = (Client)it.next();
+            if(temp.getBalance()<0){
+                System.out.println(temp);
+            }
+        }
     }
     public boolean insert(Client c){
         this.directory.add(c);

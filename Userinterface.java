@@ -5,9 +5,9 @@ import java.io.*;
 
 public class Userinterface{
     private static Userinterface ui;
-    private static String menu = "\tMain Menu\n1. Add Clients \n2. Add Suppliers\n3. Add Products"+
-    "\n4. Add to Shopping cart\n5. Display Clients\n6. Display Suppliers\n7. Display Products"+
-    "\n8. Save data\n9. Exit\n10. populate database\n11. Process Order\n12. Remove something";
+    private static String menu = "\tMain Menu\n1. Add something \n2. Remove something\n3. Edit something"+
+    "\n4. Display Clients\n5. Display Suppliers\n6. Display Products"+
+    "\n7. Add to cart\n8. Edit Cart\n9. Process order\n10. Save\n11. Exit\n12. Populate db";
     private static Warehouse warehouse;
     private Userinterface(){
         if(tOrf("Use save data? y/n?")){
@@ -94,11 +94,36 @@ public class Userinterface{
             String name = getResponse("Enter product name:");
             int count = Integer.valueOf(getResponse("Enter Product Stock count: "));
             double price = Double.valueOf(getResponse("Enter product price: "));
-            warehouse.addProduct(name, count, price);
+            int sid = Integer.valueOf(getResponse("Enter Supplier ID:"));
+            warehouse.addProduct(name, count, price,sid);
             if(!tOrf("Do you want to add another product? y/n?")){
                 break;
             }
         }while(true);
+    }
+    public void add(){
+        String choice = getResponse(getResponse("What would you like to add?(c,p,s)"));
+        switch(choice){
+            case "c":
+                addClient();
+            break;
+            case "p":
+                addProduct();
+            break;
+            case "s":
+                addSupplier();
+            break;
+        }
+    }
+    public void edit(){
+        System.out.println("wip");
+    }
+    public void editCart(){
+        int cid = Integer.valueOf(getResponse("Enter the clients id:"));
+        warehouse.displayCart(cid);
+        int item = Integer.valueOf(getResponse("Enter product id:"));
+        int adjust = Integer.valueOf(getResponse("Adjust quanity by(0 for none): "));
+        System.out.println(warehouse.editCart(cid, item, adjust));
     }
     public void showClients(){
         Iterator clients = warehouse.getClients();
@@ -134,11 +159,14 @@ public class Userinterface{
         warehouse.addSupplier("Supplier3");
         warehouse.addSupplier("Supplier4");
         warehouse.addSupplier("Supplier5");
-        warehouse.addProduct("Product1",4,4.0);
-        warehouse.addProduct("Product2",7,2.0);
-        warehouse.addProduct("Product3",9,1.0);
-        warehouse.addProduct("Product4",8,5.0);
-        warehouse.addProduct("Product5",1,7.0);
+        warehouse.addProduct("Product1",4,4.0,1);
+        warehouse.addProduct("Product2",7,2.0,2);
+        warehouse.addProduct("Product3",9,1.0,3);
+        warehouse.addProduct("Product4",8,5.0,4);
+        warehouse.addProduct("Product5",1,7.0,1);
+        warehouse.addProduct("Product6",1,7.0,2);
+        warehouse.addProduct("Product7",1,7.0,3);
+        warehouse.addProduct("Product8",1,7.0,4);
     }
     private void retrieve() {
         try {
@@ -158,41 +186,41 @@ public class Userinterface{
         do{
             System.out.println(menu);
             switch(Integer.valueOf(getResponse("Select menu option: "))){
-                case 1://add clients
-                addClient(); 
+                case 1://add 
+                add(); 
                 break;
-                case 2://add suppliers
-                addSupplier();
+                case 2://remove 
+                remove();
                 break;
-                case 3://add products
-                addProduct();
+                case 3://edit 
+                edit();
                 break;
-                case 4://addToOrder
-                addToShoppingCart();
-                break;
-                case 5://Display clients
+                case 4://Display clients
                 showClients();
                 break;
-                case 6://Display suppliers
+                case 5://Display suppliers
                 showSuppliers();
                 break;
-                case 7://Display products
+                case 6://Display products
                 showProducts();
                 break;
-                case 8://save
-                save();
+                case 7://add to cart
+                addToShoppingCart();
                 break;
-                case 9://exit
-                System.exit(0);
+                case 8://edit cart
+                editCart();
                 break;
-                case 10://populate db
-                populateDb();
-                break;
-                case 11://process order
+                case 9://process order
                 processOrder();
                 break;
-                case 12:
-                remove();
+                case 10://save
+                save();
+                break;
+                case 11://exit
+                System.exit(0);
+                break;
+                case 12://populate db
+                populateDb();
                 break;
             }
         }while(true);
