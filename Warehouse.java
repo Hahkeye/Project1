@@ -34,6 +34,9 @@ public class Warehouse implements Serializable{
     public Iterator getProducts(){
         return this.products.getProducts();
     }
+    public Product getProduct(int pid){
+        return this.products.contains(pid);
+    }
     public Client getClient(int cID){
         return this.clients.getClient(cID);
     }
@@ -85,8 +88,9 @@ public class Warehouse implements Serializable{
     }
     public void addProduct(String name,int count,double price,int s){
         Supplier sup=suppliers.contains(s);
-        this.products.insert(new Product(name,count,price,sup));
-        suppliers.contains(s).addItem(new Product(name,count,price,sup));
+        Product tempP = new Product(name,count,price,sup);
+        this.products.insert(tempP);
+        suppliers.contains(s).addItem(tempP);
     }
     public void adjustProduct(int pId,int count){
         if(this.products.contains(pId)){
@@ -124,16 +128,28 @@ public class Warehouse implements Serializable{
         }
         return false;
     }
-    public Supplier sExists(int sID){
-        return this.suppliers.exists(sID);
+    public boolean editCart(int cid,int item,int count){
+        Client tempC=clients.contains(cid);
+        if(tempC!=null){
+            tempC.cartAdjust(item, count);
+        }
+        return false;
     }
-    public Client cExists(int cID){
-        return this.clients.exists(cID);
+    public void displayCart(int cid){
+        Client tempC=clients.contains(cid);
+        if(tempC!=null){
+            tempC.cart();
+        }
     }
-    public Product pExists(int pID){
-        return this.products.exists(pID);
-    }
-
+    // public Supplier sExists(int sID){
+    //     return this.suppliers.exists(sID);
+    // }
+    // public Client cExists(int cID){
+    //     return this.clients.exists(cID);
+    // }
+    // public Product pExists(int pID){
+    //     return this.products.exists(pID);
+    // }
     public static Warehouse retrieve(){
         try {
             FileInputStream file = new FileInputStream("WarehouseData");

@@ -38,7 +38,7 @@ public class Client implements Serializable{
         }
         return null;
     }
-    public AbstractMap.SimpleEntry<Product,Integer> contains(Product p){//depreciated
+    public AbstractMap.SimpleEntry<Product,Integer> contains(Product p){
         Iterator it = cart.iterator();
         while(it.hasNext()){
             AbstractMap.SimpleEntry<Product,Integer> temp= (AbstractMap.SimpleEntry<Product,Integer>) it.next();
@@ -94,7 +94,29 @@ public class Client implements Serializable{
     public double adjustBalance(double adjustNumber){
         return(this.balance+=adjustNumber);
     }
-
+    public boolean cartAdjust(int pid,int count){
+        AbstractMap.SimpleEntry<Product,Integer> tempE = contains(pid);
+        if(tempE!=null){
+            if(count!=0){
+                tempE.setValue(tempE.getValue()+count);
+                return true;
+            }else{
+                this.cart.remove(tempE);
+                return true;
+            }
+        }
+        return false;
+    }
+    public void cart(){
+        int count=1;
+        Iterator it = cart.iterator();
+        while(it.hasNext()){
+            AbstractMap.SimpleEntry<Product,Integer> pair = (AbstractMap.SimpleEntry<Product,Integer>)it.next();
+            Product tempP = pair.getKey();
+            System.out.println(count+":"+" "+tempP.getName()+"|Id:"+tempP.getID()+"|Count:"+pair.getValue()+"\n");
+            count++;
+        }
+    }
     public String toString(){
         return this.ID+"|"+this.name+"|$"+this.balance+"|"+this.cart.toString();
     }

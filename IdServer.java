@@ -8,7 +8,7 @@ public class IdServer implements Serializable{
     private int pID;
     private int sID;
 
-    private idServer(){
+    private IdServer(){
         this.cID=1;
         this.pID=1;
         this.sID=1;
@@ -21,17 +21,16 @@ public class IdServer implements Serializable{
         }
     }
     public int getcid() {
-        return ++this.cID;
+        return this.cID++;
     }
     public int getpid() {
-        return ++this.pID;
+        System.out.println("new product id:"+this.pID);
+        return this.pID++;
     }
     public int getsid(){
-        return ++this.sID;
+        System.out.println("new supplier Id:"+this.sID);
+        return this.sID++;        
     }
-    // public String toString() {
-    //     return ("IdServer" + idCounter);
-    // }
     public static void retrieve(ObjectInputStream input) {
         try {
             server = (IdServer) input.readObject();
