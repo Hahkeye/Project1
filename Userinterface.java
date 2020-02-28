@@ -180,7 +180,20 @@ public class Userinterface{
         System.out.println("the payment was "+warehouse.pay(cid, price));
     }
     public void recevie(){
-
+        do{
+            int pid = Integer.valueOf(getResponse("Enter the product ID: "));
+            int count = Integer.valueOf(getResponse("Enter count coming in: "));
+            if(warehouse.checkWaitList(pid)){
+                if(tOrf("Do you want to fill the waitlist?y/n?")){
+                    
+                }else{
+                    warehouse.adjustProduct(pid, count);
+                }
+            }
+            if(warehouse.existsP(pid)){
+                warehouse.adjustProduct(pid, count);
+            }
+        }while(tOrf("Would you like to enter another product?"));
     }
 
     private static void save(){

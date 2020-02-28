@@ -28,6 +28,7 @@ public class Client implements Serializable{
     public double getBalance(){return this.balance;}
     public Iterator getCart(){return this.cart.iterator();}
     public Iterator getTransactions(){return this.transactionList.iterator();}
+    public Iterator getWaitList(){return this.waitlist.iterator();}
 
     private void setName(String name){
         this.name=name;

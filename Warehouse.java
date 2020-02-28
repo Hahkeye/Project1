@@ -7,8 +7,6 @@ public class Warehouse implements Serializable{
     private SupplierDirectory suppliers;
     private ClientDirectory clients;
     private ProductDirectory products;
-    //private OrderDirectory orders;
-    //private idServer ids;
     
     private Warehouse(){
         suppliers=SupplierDirectory.instance();
@@ -191,6 +189,43 @@ public class Warehouse implements Serializable{
         if(tempP!=null){
             tempP.change(atrib,val);
         }
+    }
+    public boolean checkWaitList(int pid){
+        Iterator it = warehouse.clients.getClients();
+        while(it.hasNext()){
+            Client tempC=(Client)it.next();
+            Iteartor it2 = tempC.getWaitList();
+            while(it2.hasNext()){
+                AbstractMap.SimpleEntry<Product,Integer> tempE = (AbstractMap.SimpleEntry<Product,Integer>)it2.next();
+                if(tempE.getKey().getID()==pid){return true;}
+
+            }
+        }
+        return false;
+    }
+    public void recieve(int id, int count){
+        Iterator it = warehouse.clients.getClients();
+        while(it.hasNext()){
+            Client tempC=(Client)it.next();
+            Iteartor it2 = tempC.getWaitList();
+            while(it2.hasNext()){
+                AbstractMap.SimpleEntry<Product,Integer> tempE = (AbstractMap.SimpleEntry<Product,Integer>)it2.next();
+                if(count>=tempE.getValue()){
+                    tempC.addProduct(tempE.getKey(), count);
+                    count-=tempE.getValue();
+                    warehouse.adjustProduct(pid, count);
+                    it2.remove(tempE);
+                }  
+
+            }
+        }
+
+    }
+    public boolean existsP(int pid){
+        if(this.products.contains(pid)!=null){
+            return true;
+        }
+        return false;
     }
     public static Warehouse retrieve(){
         try {
