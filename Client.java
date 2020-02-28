@@ -12,7 +12,7 @@ public class Client implements Serializable{
     private List<Map.Entry<Product,Integer>> cart;
     private List transactionList;
     private List<Map.Entry<Product,Integer>> waitlist;
-
+    private String atribs = "1. Name\n2. Balance\n3. Address";
 
     public Client(String name){
         this.name=name;
@@ -20,7 +20,7 @@ public class Client implements Serializable{
         this.balance=0.0;
         this.cart = new LinkedList<>();
         this.transactionList=new LinkedList();
-    }
+    }   
 
     public int getID(){return this.ID;}
     public String getName(){return this.name;}
@@ -28,6 +28,16 @@ public class Client implements Serializable{
     public double getBalance(){return this.balance;}
     public Iterator getCart(){return this.cart.iterator();}
     public Iterator getTransactions(){return this.transactionList.iterator();}
+
+    private void setName(String name){
+        this.name=name;
+    }
+    private void setAddress(String address){
+        this.address=address;
+    }
+    private void setBalance(double balance){
+        this.balance=balance;
+    }
     public AbstractMap.SimpleEntry<Product,Integer> contains(int p){
         Iterator it = cart.iterator();
         while(it.hasNext()){
@@ -61,7 +71,7 @@ public class Client implements Serializable{
                     it.remove();
                 }else{
                     System.out.println("Not enough product to satisfiy order. adding to waitlist");
-                    this.waitlist.add(new AbstractMap.SimpleEntry<>(ent.getKey(),ent.getValue()));
+                    this.waitlist.add(new AbstractMap.SimpleEntry<Product,Integer>(ent.getKey(),ent.getValue()));
                 }
             }
             transactionList.add("Order for: "+deduc);
@@ -116,6 +126,22 @@ public class Client implements Serializable{
             System.out.println(count+":"+" "+tempP.getName()+"|Id:"+tempP.getID()+"|Count:"+pair.getValue()+"\n");
             count++;
         }
+    }
+    public void change(int index,String val){
+        switch(index){
+            case 1:
+                setName(val);
+            break;
+            case 2:
+                setBalance(Double.valueOf(val));
+            break;
+            case 3:
+                setAddress(val);
+            break;
+        }
+    }
+    public void getAtribs(){
+        System.out.println(this.atribs);
     }
     public String toString(){
         return this.ID+"|"+this.name+"|$"+this.balance+"|"+this.cart.toString();

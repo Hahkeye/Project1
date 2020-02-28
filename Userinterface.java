@@ -6,7 +6,7 @@ import java.io.*;
 public class Userinterface{
     private static Userinterface ui;
     private static String menu = "\tMain Menu\n1. Add something \n2. Remove something\n3. Edit something"+
-    "\n4. Display Clients\n5. Display Suppliers\n6. Display Products"+
+    "\n4. Display something\n5. Accept Payment\n6. Recieve Shipment"+
     "\n7. Add to cart\n8. Edit Cart\n9. Process order\n10. Save\n11. Exit\n12. Populate db";
     private static Warehouse warehouse;
     private Userinterface(){
@@ -102,7 +102,7 @@ public class Userinterface{
         }while(true);
     }
     public void add(){
-        String choice = getResponse(getResponse("What would you like to add?(c,p,s)"));
+        String choice = getResponse("What would you like to add?(c,p,s)");
         switch(choice){
             case "c":
                 addClient();
@@ -112,14 +112,31 @@ public class Userinterface{
             break;
             case "s":
                 addSupplier();
+
             break;
         }
     }
     public void edit(){
-        System.out.println("wip");
+        String choice = getResponse("Enter the type of thing you want to edit(c,p,s)?");
+        int id =  Integer.valueOf(getResponse("Enter the Id of the thing you want to edit:"));
+        if(warehouse.displayAtribs(choice,id)){
+            int index = Integer.valueOf(getResponse("Enter the index of the attribute you want to change:"));
+            String value = getResponse("Enter the new value:");
+            switch(choice){
+                case "c":
+                    warehouse.editClient(id,index,value);
+                break;
+                case "s":
+                    warehouse.editSupplier(id,index,value);
+                break;
+                case "p":
+                    warehouse.editProduct(id,index,value);
+                break;
+            }
+        }
     }
     public void editCart(){
-        int cid = Integer.valueOf(getResponse("Enter the clients id:"));
+        int cid = Integer.valueOf(getResponsed("Enter the clients id:"));
         warehouse.displayCart(cid);
         int item = Integer.valueOf(getResponse("Enter product id:"));
         int adjust = Integer.valueOf(getResponse("Adjust quanity by(0 for none): "));
@@ -143,12 +160,34 @@ public class Userinterface{
             System.out.println(suppliers.next().toString());
         }
     }
+    public void show(){
+        String choice = getResponse("What would you like to display?(c,p,s)");
+        switch(choice){
+            case "c":
+                showClients();
+            break;
+            case "p":
+                showProducts();
+            break;
+            case "s":
+                showSuppliers();
+            break;
+        }
+    }
+    public void pay(){
+        int cid = Integer.valueOf(getResponse("Enter client id:"));
+        Double price = Double.valueOf(getResponse("Enter amount being payed: "));
+        System.out.println("the payment was "+warehouse.pay(cid, price));
+    }
+    public void recevie(){
+
+    }
 
     private static void save(){
         System.out.println(warehouse.save());
         System.out.println("The data has been saved.");
     }
-    public void populateDb(){
+    public void populateDb(){// Testing method to populate the DB quickly
         warehouse.addClient("client1");
         warehouse.addClient("client2");
         warehouse.addClient("client3");
@@ -195,14 +234,14 @@ public class Userinterface{
                 case 3://edit 
                 edit();
                 break;
-                case 4://Display clients
-                showClients();
+                case 4://Display something
+                show();
                 break;
-                case 5://Display suppliers
-                showSuppliers();
+                case 5://Accept payment
+                pay();
                 break;
-                case 6://Display products
-                showProducts();
+                case 6://recive shipment
+                recevie();
                 break;
                 case 7://add to cart
                 addToShoppingCart();

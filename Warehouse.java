@@ -13,9 +13,7 @@ public class Warehouse implements Serializable{
     private Warehouse(){
         suppliers=SupplierDirectory.instance();
         clients=ClientDirectory.instance();
-        products=ProductDirectory.instance();
-        //orders=OrderDirectory.instance();
-        //ids=idServer.instnace();       
+        products=ProductDirectory.instance();     
     }
 
     public static Warehouse instance(){
@@ -141,15 +139,59 @@ public class Warehouse implements Serializable{
             tempC.cart();
         }
     }
-    // public Supplier sExists(int sID){
-    //     return this.suppliers.exists(sID);
-    // }
-    // public Client cExists(int cID){
-    //     return this.clients.exists(cID);
-    // }
-    // public Product pExists(int pID){
-    //     return this.products.exists(pID);
-    // }
+    public boolean pay(int cid, double amount){
+        Client tempC =  warehouse.clients.contains(cid);
+        if(tempC!=null){
+            tempC.adjustBalance(amount);
+            System.out.println(tempC.toString());
+            return true;
+        }
+        return false;
+    }
+    public boolean displayAtribs(String choice, int id){
+        switch(choice){
+            case "c":
+                Client tempC= warehouse.clients.contains(id);
+                if(tempC!=null){
+                    tempC.getAtribs();
+                    return true;
+                }
+            break;
+            case "s":
+                Supplier tempS=warehouse.suppliers.contains(id);
+                if(tempS!=null){
+                    tempS.getAtribs();
+                    return true;
+                }
+            break;
+            case "p":
+                Product tempP=warehouse.products.contains(id);
+                if(tempP!=null){
+                    tempP.getAtribs();
+                    return true;
+                }
+            break;
+        }
+        return false;
+    }
+    public void editClient(int cid,int atrib,String val){
+        Client tempC=warehouse.clients.contains(cid);
+        if(tempC!=null){
+            tempC.change(atrib,val);
+        }
+    }
+    public void editSupplier(int sid,int atrib,String val){
+        Supplier tempS=warehouse.suppliers.contains(sid);
+        if(tempS!=null){
+            tempS.change(atrib,val);
+        }
+    }
+    public void editProduct(int pid,int atrib,String val){
+        Product tempP=warehouse.products.contains(pid);
+        if(tempP!=null){
+            tempP.change(atrib,val);
+        }
+    }
     public static Warehouse retrieve(){
         try {
             FileInputStream file = new FileInputStream("WarehouseData");

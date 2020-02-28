@@ -10,6 +10,7 @@ public class Product implements Serializable{
     private int ID;
     private int stockCount;
     private double price;
+    private String atribs = "1. Name\n2. Description\n3. Stock Count\n4. Price";
 
     public Product(String name,int count,double price){
         this.name=name;
@@ -52,9 +53,6 @@ public class Product implements Serializable{
     public void setDesc(String desc){
         this.description=desc;
     }
-    public void setID(int id){
-        this.ID=id;
-    }
     public void setStockCount(int count){
         this.stockCount=count;
     }
@@ -64,10 +62,28 @@ public class Product implements Serializable{
     public void setPrice(Double price){
         this.price=price;
     }
-    public void setSupplier(int supplierID){
+    public void setSupplier(int supplierID){//fix this
         this.supplier=supplierID;
     }
-
+    public void getAtribs(){
+        System.out.println(atribs);
+    }
+    public void change(int index,String val){
+        switch(index){
+            case 1:
+                setName(val);
+            break;
+            case 2:
+                setDesc(val);
+            break;
+            case 3:
+                setStockCount(Integer.valueOf(val));
+            break;
+            case 4:
+                setPrice(Double.valueOf(val));
+            break;
+        }
+    }
     public String toString(){
         return this.name+"|"+this.description+"|"+this.ID+"|"+this.stockCount+"|"+this.price+"|"+this.supplier.getName();
     }
