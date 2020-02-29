@@ -7,6 +7,7 @@ public class Supplier implements Serializable{
     private String name;
     private int ID;
     private List<AbstractMap.Entry<Product,Double>> items;
+    private String atribs = "1. Name\n";
     
     public Supplier(String name){
         this.name=name;
@@ -19,9 +20,6 @@ public class Supplier implements Serializable{
 
     public void setName(String name){
         this.name=name;
-    }
-    public void setID(int id){
-        this.ID=id;
     }
     public void addItem(Product p){
         this.items.add(new AbstractMap.SimpleEntry<>(p,p.getPrice()));
@@ -37,6 +35,16 @@ public class Supplier implements Serializable{
             }
         }
         return false;
+    }
+    public void getAtribs(){
+        System.out.println(this.atribs);
+    }
+    public void change(int index,String val){
+        switch(index){
+            case 1:
+                setName(val);
+            break;
+        }
     }
     public String toString(){
         return this.ID+"|"+this.name+"|"+this.items;
