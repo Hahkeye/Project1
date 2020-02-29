@@ -83,27 +83,27 @@ public class Client implements Serializable{
         }
         return false;
     }
-    public void addProduct(Product p,int quaity){
-        AbstractMap.SimpleEntry<Product,Integer> temp = contains(p);
+    public void addProduct(Product pro,int quaity){
+        AbstractMap.SimpleEntry<Product,Integer> temp = contains(pro);
         if(temp!=null){
             temp.setValue(temp.getValue()+quaity);
             System.out.println("Product already was in cart adding to that ");
         }else{
-            this.cart.add(new AbstractMap.SimpleEntry<>(p,quaity));
+            this.cart.add(new AbstractMap.SimpleEntry<>(pro,quaity));
             System.out.println("Product was not already in cart adding to cart");
             System.out.println(this.cart);
         }
         
     }
-    public void addProduct(int pid,int quaity){
-        AbstractMap.SimpleEntry<Product,Integer> temp = contains(pid);
-        if(temp!=null){
-            temp.setValue(temp.getValue()+quaity);
-        }else{
-            cart.add(new AbstractMap.SimpleEntry<>(p,quaity));
-        }
+    // public void addProduct(int pid,int quaity){
+    //     AbstractMap.SimpleEntry<Product,Integer> temp = contains(pid);
+    //     if(temp!=null){
+    //         temp.setValue(temp.getValue()+quaity);
+    //     }else{
+    //         cart.add(new AbstractMap.SimpleEntry<>(pid,quaity));
+    //     }
         
-    }
+    // }
     public double adjustBalance(double adjustNumber){
         return(this.balance+=adjustNumber);
     }

@@ -39,9 +39,6 @@ public class Warehouse implements Serializable{
     public Supplier getSupplier(int sID){
         return this.suppliers.contains(sID);
     }
-    public Iterator getOrders(){
-        return this.orders.getOrders();
-    }
     public void getTransactions(int cid){//part 9
         Client target = this.clients.contains(cid);
         if(target!=null){
@@ -156,7 +153,7 @@ public class Warehouse implements Serializable{
                 }
             break;
             case "s":
-                Supplier tempS=warehouse.suppliers.contains(id);
+                Supplier tempS = warehouse.suppliers.contains(id);
                 if(tempS!=null){
                     tempS.getAtribs();
                     return true;
@@ -179,7 +176,7 @@ public class Warehouse implements Serializable{
         }
     }
     public void editSupplier(int sid,int atrib,String val){
-        Supplier tempS=warehouse.suppliers.contains(sid);
+        Supplier tempS = warehouse.suppliers.contains(sid);
         if(tempS!=null){
             tempS.change(atrib,val);
         }

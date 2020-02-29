@@ -31,21 +31,21 @@ public class Product implements Serializable{
         this.price=price;
         this.ID=IdServer.instance().getpid();
     }
-    public Product(String name, String description, int id, int sCount, double price,int supplierID){
-        this.name=name;
-        this.description=description;
-        this.ID=id;
-        this.stockCount=sCount;
-        this.price=price;
-        this.supplier=supplierID;
-    }
+    // public Product(String name, String description, int id, int sCount, double price,int supplierID){
+    //     this.name=name;
+    //     this.description=description;
+    //     this.ID=id;
+    //     this.stockCount=sCount;
+    //     this.price=price;
+    //     this.supplier=supplierID;
+    // }
 
     public String getName(){return this.name;}
     public String getDescription(){return this.description;}
     public int getID(){return this.ID;}
     public int getStockCount(){return this.stockCount;}
     public double getPrice(){return this.price;}
-    public int getSupplier(){return this.supplier;}
+    public Supplier getSupplier(){return this.supplier;}
 
     public void setName(String name){
         this.name=name;
@@ -62,7 +62,7 @@ public class Product implements Serializable{
     public void setPrice(Double price){
         this.price=price;
     }
-    public void setSupplier(int supplierID){//fix this
+    public void setSupplier(Supplier supplierID){//fix this
         this.supplier=supplierID;
     }
     public void getAtribs(){
