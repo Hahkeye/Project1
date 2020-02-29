@@ -136,7 +136,7 @@ public class Userinterface{
         }
     }
     public void editCart(){
-        int cid = Integer.valueOf(getResponsed("Enter the clients id:"));
+        int cid = Integer.valueOf(getResponse("Enter the clients id:"));
         warehouse.displayCart(cid);
         int item = Integer.valueOf(getResponse("Enter product id:"));
         int adjust = Integer.valueOf(getResponse("Adjust quanity by(0 for none): "));
