@@ -27,7 +27,7 @@ public class Supplier implements Serializable{
     public boolean removeItem(Product p){
         Iterator it = items.iterator();
         while(it.hasNext()){
-            Map.Entry<Product,Double> temp = it.next();
+            Map.Entry<Product,Double> temp = (Map.Entry<Product,Double> )it.next();
             Product tempP = temp.getKey();
             if(tempP.getID()==p.getID()){
                 items.remove(temp);
