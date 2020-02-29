@@ -9,9 +9,9 @@ public class Client implements Serializable{
     private String address;
     private String name;
     private double balance;
-    private List<Map.Entry<Product,Integer>> cart;
+    private List<AbstractMap.Entry<Product,Integer>> cart;
     private List transactionList;
-    private List<Map.Entry<Product,Integer>> waitlist;
+    private List<AbstractMap.Entry<Product,Integer>> waitlist;
     private String atribs = "1. Name\n2. Balance\n3. Address";
 
     public Client(String name){
@@ -20,6 +20,7 @@ public class Client implements Serializable{
         this.balance=0.0;
         this.cart = new LinkedList<>();
         this.transactionList=new LinkedList();
+        this.waitlist = new LinkedList<>();
     }   
 
     public int getID(){return this.ID;}
@@ -72,7 +73,8 @@ public class Client implements Serializable{
                     it.remove();
                 }else{
                     System.out.println("Not enough product to satisfiy order. adding to waitlist");
-                    this.waitlist.add(new AbstractMap.SimpleEntry<Product,Integer>(ent.getKey(),ent.getValue()));
+                    it.remove();
+                    this.waitlist.add(new AbstractMap.SimpleEntry<>(ent.getKey(),ent.getValue()));
                 }
             }
             transactionList.add("Order for: "+deduc);
@@ -141,10 +143,32 @@ public class Client implements Serializable{
             break;
         }
     }
+    public int waiting(int pid){
+        Iterator it = waitlist.iterator();
+        while(it.hasNext()){
+            AbstractMap.SimpleEntry<Product,Integer> tempE = (AbstractMap.SimpleEntry<Product,Integer>) it.next();
+            if(tempE.getKey().getID()==pid){
+                return tempE.getValue();
+            }
+        }
+        return 0;
+
+    }
+    public void waitAdjust(int pid,int count){
+        Iterator it = waitlist.iterator();
+        while(it.hasNext()){
+            AbstractMap.SimpleEntry<Product,Integer> tempE = (AbstractMap.SimpleEntry<Product,Integer>) it.next();
+            if(tempE.getKey().getID()==pid){
+                it.remove();
+                addProduct(tempE.getKey(), tempE.getValue());
+            }
+        }
+        // processOrder();warehouse.adjustProduct(pId, count);
+    }
     public void getAtribs(){
         System.out.println(this.atribs);
     }
     public String toString(){
-        return this.ID+"|"+this.name+"|$"+this.balance+"|"+this.cart.toString();
+        return this.ID+"|"+this.name+"|$"+this.balance+"|Cart:"+this.cart.toString()+"|WaitList:"+this.waitlist.toString();
     }
 }

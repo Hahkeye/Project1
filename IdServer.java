@@ -24,11 +24,11 @@ public class IdServer implements Serializable{
         return this.cID++;
     }
     public int getpid() {
-        System.out.println("new product id:"+this.pID);
+        //System.out.println("new product id:"+this.pID);
         return this.pID++;
     }
     public int getsid(){
-        System.out.println("new supplier Id:"+this.sID);
+       // System.out.println("new supplier Id:"+this.sID);
         return this.sID++;        
     }
     public static void retrieve(ObjectInputStream input) {

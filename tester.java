@@ -43,21 +43,6 @@ public class tester{
         w.addProduct("Product8",1,7.0,4);
         w.addToOrder(1, 1, 2);
         w.getProduct(1);
-        // w.addToOrder(1, 2, 3);
-        // w.processOrder(1);
-        // // Iterator it = w.getClients();   
-        // // while(it.hasNext()){
-        // //     System.out.println(((Client)it.next()));
-        // // }
-        // System.out.println("Clients with balance");
-        // w.getClient(1).adjustBalance(-4);
-        // w.getClientsWithBalance();
-        // System.out.println("single client transaction");
-        // w.getTransactions(1);
-        // System.out.println("All manufactuers and items");
-        // w.getSuppliersAndProducts();
-        // System.out.println("All products and stuff");
-        // w.getAllProducts();
 
 
 

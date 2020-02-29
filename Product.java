@@ -85,7 +85,7 @@ public class Product implements Serializable{
         }
     }
     public String toString(){
-        return this.name+"|"+this.description+"|"+this.ID+"|"+this.stockCount+"|"+this.price+"|"+this.supplier.getName();
+        return this.name+"|"+this.description+"|ID:"+this.ID+"|StockCount:"+this.stockCount+"|Price:$"+this.price+"|"+this.supplier.getName();
     }
 
 }

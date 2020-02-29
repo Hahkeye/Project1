@@ -183,9 +183,9 @@ public class Userinterface{
         do{
             int pid = Integer.valueOf(getResponse("Enter the product ID: "));
             int count = Integer.valueOf(getResponse("Enter count coming in: "));
-            if(warehouse.checkWaitList(pid)){
+            if(warehouse.checkWaitList(pid,count)){
                 if(tOrf("Do you want to fill the waitlist?y/n?")){
-                    
+                    warehouse.recieve(pid, count);
                 }else{
                     warehouse.adjustProduct(pid, count);
                 }

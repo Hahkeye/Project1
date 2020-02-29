@@ -89,11 +89,11 @@ public class Warehouse implements Serializable{
         suppliers.contains(s).addItem(tempP);
     }
     public void adjustProduct(int pId,int count){
-        if(this.products.contains(pId)){
-            this.products.contains(pID).adjustProduct(count);
-            break;
+        if(this.products.contains(pId)!=null){
+            this.products.contains(pId).adjustCount(count);
+        }else{
+            System.out.println("failed");
         }
-        System.out.println("failed");
     }
     public boolean processOrder(int cid){
         Client target=this.clients.contains(cid);
@@ -190,34 +190,28 @@ public class Warehouse implements Serializable{
             tempP.change(atrib,val);
         }
     }
-    public boolean checkWaitList(int pid){
+    public boolean checkWaitList(int pid,int count){
         Iterator it = warehouse.clients.getClients();
         while(it.hasNext()){
             Client tempC=(Client)it.next();
-            Iteartor it2 = tempC.getWaitList();
-            while(it2.hasNext()){
-                AbstractMap.SimpleEntry<Product,Integer> tempE = (AbstractMap.SimpleEntry<Product,Integer>)it2.next();
-                if(tempE.getKey().getID()==pid){return true;}
-
-            }
+            if(tempC.waiting(pid)<=count){return true;}
         }
         return false;
     }
     public void recieve(int id, int count){
         Iterator it = warehouse.clients.getClients();
         while(it.hasNext()){
-            Client tempC=(Client)it.next();
-            Iteartor it2 = tempC.getWaitList();
-            while(it2.hasNext()){
-                AbstractMap.SimpleEntry<Product,Integer> tempE = (AbstractMap.SimpleEntry<Product,Integer>)it2.next();
-                if(count>=tempE.getValue()){
-                    tempC.addProduct(tempE.getKey(), count);
-                    count-=tempE.getValue();
-                    warehouse.adjustProduct(pid, count);
-                    it2.remove(tempE);
-                }  
-
+            Client tempC=(Client) it.next();
+            int num = tempC.waiting(id);
+            if(num!=0){
+                count-=num;
+                tempC.waitAdjust(id, num);
+                warehouse.adjustProduct(id, count);
+                tempC.processOrder();
+            }else{
+                warehouse.adjustProduct(id, count);
             }
+
         }
 
     }
