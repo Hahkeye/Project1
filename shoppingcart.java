@@ -3,11 +3,11 @@ import java.util.*;
 import java.io.*;
 
 
-class ShopiingCart implements Serializable {
+class ShoppingCart implements Serializable {
     private Product item;
     private int quantity;
         
-    ShopiingCart(Product item, int quantity){
+    ShoppingCart(Product item, int quantity){
         this.item = item;
         this.quantity = quantity;
     }//end constructor
