@@ -27,7 +27,7 @@ public class Userinterface{
     public static String getResponse(String query){
         do{
             try {
-                System.out.println(query);
+                //System.out.println(query);
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 String line = reader.readLine();
                 StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
