@@ -69,6 +69,9 @@ public class LoginState extends State{
             System.out.println("Bad uid");
         }
     }
+    private void admin(){
+        
+    }
 
     public void process(){
         int command;
