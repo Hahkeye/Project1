@@ -62,7 +62,7 @@ public class LoginState extends State{
     private void user(){
         String userID =  getResponse("Enter the userID: ");
         if(Warehouse.instance().getClient(cID)!=null){
-            WarehouseContext.instance().setLogin(WarehouseContext.UULOGIN);
+            WarehouseContext.instance().setLogin(WarehouseContext.ULOGIN);
             WarehouseContext.instance().setUser(userID);
             WarehouseContext.instance().changeState(1);
         }else{
@@ -70,7 +70,8 @@ public class LoginState extends State{
         }
     }
     private void admin(){
-        
+        WarehouseContext.instance().setLogin(WarehouseContext.ALOGIN);
+        WarehouseContext.instance().changeState(2);
     }
 
     public void process(){
@@ -84,6 +85,9 @@ public class LoginState extends State{
                 break;
                 case ULOGIN:
                     user();
+                break;
+                case ALOGIN:
+                    admin();
                 break;
                 default:
                     System.out.println("broke;");

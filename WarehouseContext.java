@@ -64,7 +64,7 @@ public class WarehouseContext{
         }
         states = new State[4];
         states[0] = ClerkState.instance();
-        states[1] = UserState.instance();
+        states[1] = ClientState.instance();
         states[2] = LoginState.instance();
         states[3] = AdminState.instance();
         nState = new int[4][3];
