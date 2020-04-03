@@ -1,27 +1,22 @@
-import java.util.*;
-
 import project1.Warehouse;
-
+import java.util.*;
 import java.text.*;
 import java.io.*;
 public class AdminState extends State{
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Warehouse warehouse;
     private WarehouseContext context;
-    private static ClerkState instance;
+    private static AdminState instance;
     private static final int EXIT = 0;
-    private static final int COMMAND1=1;
-    private static final int COMMAND2=2;
-    private static final int COMMAND3=3;
-    private static final int COMMAND4=4;
-    private static final int COMMAND5=5;
-    private static final int COMMAND6=6;
-    private static final int COMMAND7=7;
-    private static final int COMMAND8=8;
-    private static final int COMMAND9=9;
-    private static final int USERSWAP=10;
+    private static final int ADDPRODUCT=1;
+    private static final int ADDSUPPIIER=2;
+    private static final int SUPPLIERLIST=3;
+    private static final int SUPPLIERSFORPRODUCT=4;
+    private static final int PRODUCTSFORSUPPLIERS=5;
+    private static final int ADDSUPPLIERTOPRODUCT=6;
+    private static final int MIMIC=7;
     
-    private ClerkState(){
+    private AdminState(){
         super();
         warehouse = Warehouse.instance();
     }
@@ -70,7 +65,7 @@ public class AdminState extends State{
         do{
             try{
                 int value = Integer.parseInt(getResponse("Enter Command: "));
-                if(value <= EXIT && value >= CLOGIN){
+                if(value <= EXIT && value >= MIMIC){
                     return value;
                 }
             }catch(NumberFormatException e){
@@ -80,8 +75,6 @@ public class AdminState extends State{
     }
     public void userMenu(){
         String userID = getResponse("Please input the user id: ");
-        if(WarehouseContext.instance().s)
-        //check if they exists
     }
     public void logout(){
         WarehouseContext.instance().changeState(0);
@@ -89,43 +82,38 @@ public class AdminState extends State{
     public void menu(){
         System.out.println("Admin Menu:");
         System.out.println(EXIT + " to Exit.");
-        System.out.println(COMMAND1 + " for command 1.");
-        System.out.println(COMMAND2 + " for command 2.");
-        System.out.println(COMMAND3 + " for command 3.");
-        System.out.println(COMMAND4 + " for command 4.");
-        System.out.println(COMMAND5 + " for command 5.");
-        System.out.println(COMMAND6 + " for command 6.");
-        System.out.println(COMMAND7 + " for command 7.");
-        System.out.println(COMMAND8 + " for command 8.");
-        
+        System.out.println(ADDPRODUCT + ": Add Product");
+        System.out.println(ADDSUPPIIER + ": Add Suplier");
+        System.out.println(SUPPLIERLIST + ": Supplier List");
+        System.out.println(SUPPLIERSFORPRODUCT + ": Products with assoiated suppliers");
+        System.out.println(PRODUCTSFORSUPPLIERS + ": Suppliers with associated products");
+        System.out.println(ADDSUPPLIERTOPRODUCT + ": Add supplier to product");
+        System.out.println(MIMIC + ": Login as clerk");
     }
     public void process(){
         int command;
         menu();
         while((command = getCommand())!= EXIT){
             switch(command){
-                case COMMAND1:
+                case ADDPRODUCT:
 
                 break;
-                case COMMAND2:
+                case ADDSUPPIIER:
                     
                 break;
-                case COMMAND3:
+                case SUPPLIERLIST:
                     
                 break;
-                case COMMAND4:
+                case SUPPLIERSFORPRODUCT:
                     
                 break;
-                case COMMAND5:
+                case PRODUCTSFORSUPPLIERS:
                     
                 break;
-                case COMMAND6:
+                case ADDSUPPLIERTOPRODUCT:
                     
                 break;
-                case COMMAND7:
-                    
-                break;
-                case COMMAND8:
+                case MIMIC:
                     
                 break;
 

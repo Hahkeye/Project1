@@ -7,7 +7,7 @@ public class WarehouseContext{
     private static Warehouse warehouse;
     private static WarehouseContext context;
     private int currentUser;
-    private String userID;
+    private int userID;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     public static final int isClerk=0;
     public static final int isUser=1;
@@ -52,9 +52,9 @@ public class WarehouseContext{
         }
     }
     public void setLogin(int code){this.currentUser=code;}
-    public void setUser(String uID){this.userID=uID;}
+    public void setUser(int uID){this.userID=uID;}
     public int getLogin(){return this.currentUser;}
-    public String getUser(){return this.userID;}
+    public int getUser(){return this.userID;}
 
     private WarehouseContext(){
         if(tOrf(getResponse("Use saved data? y/n?"))){
@@ -102,6 +102,14 @@ public class WarehouseContext{
         }
         System.out.println("Exiting");
         System.exit(0);
+    }
+
+    public void process(){
+        states[state].run();
+    }
+
+    public static void main(String[] args){
+        WarehouseContext.instance().process();
     }
 
 }

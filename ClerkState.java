@@ -12,14 +12,11 @@ public class ClerkState extends State{
     private static final int EXIT = 0;
     private static final int ADD=1;
     private static final int PANDP=2;
-    private static final int COMMAND3=3;
-    private static final int COMMAND4=4;
-    private static final int COMMAND5=5;
-    private static final int COMMAND6=6;
-    private static final int COMMAND7=7;
-    private static final int COMMAND8=8;
-    private static final int COMMAND9=9;
-    private static final int USERSWAP=10;
+    private static final int CLIENTS=3;
+    private static final int OUSTANDING=4;
+    private static final int MIMIC=5;
+    private static final int WAITLISTS=6;
+
     
     private ClerkState(){
         super();
@@ -80,7 +77,7 @@ public class ClerkState extends State{
     }
     public void userMenu(){
         String userID = getResponse("Please input the user id: ");
-        if(WarehouseContext.instance().s)
+        //if(WarehouseContext.instance().s)
         //check if they exists
     }
     public void logout(){
@@ -101,31 +98,24 @@ public class ClerkState extends State{
         menu();
         while((command = getCommand())!= EXIT){
             switch(command){
-                case COMMAND1:
+                case ADD:
 
                 break;
-                case COMMAND2:
+                case PANDP:
                     
                 break;
-                case COMMAND3:
+                case CLIENTS:
                     
                 break;
-                case COMMAND4:
+                case OUSTANDING:
                     
                 break;
-                case COMMAND5:
+                case MIMIC:
                     
                 break;
-                case COMMAND6:
+                case WAITLISTS:
                     
                 break;
-                case COMMAND7:
-                    
-                break;
-                case COMMAND8:
-                    
-                break;
-
             }
         }
     }

@@ -72,17 +72,21 @@ public class ClientState extends State{
         }while(true);
     }
     public void editCart(){
-
+        int cid = getResponse("Enter the clients id:");
+        warehouse.displayCart(cid);
+        int item = Integer.valueOf(getResponse("Enter product id:"));
+        int adjust = Integer.valueOf(getResponse("Adjust quanity by(0 for none): "));
+        System.out.println(warehouse.editCart(cid, item, adjust));
     }
     public void waiting(){
-
+        warehouse.waitlist(WarehouseContext.instance().getUser());
     }
     public void transactions(){
-
+        warehouse.getTransactions(WarehouseContext.instance().getUser());
     }
-
+    //productrs and prices
     public void pandp(){
-
+        warehouse.getAllProducts();
     }
 
     public void details(){

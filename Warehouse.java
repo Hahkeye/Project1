@@ -195,6 +195,15 @@ public class Warehouse implements Serializable{
         }
         return false;
     }
+    public void waitlist(int cid){
+        Client tempC= warehouse.clients.contains(cid);
+        if(tempC!=null){
+            Iterator it = tempC.getWaitList();
+            while(it.hasNext()){
+                System.out.println(it);
+            }
+        }
+    }
     public void recieve(int id, int count){
         Iterator it = warehouse.clients.getClients();
         while(it.hasNext()){
