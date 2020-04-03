@@ -8,6 +8,12 @@
             "type": "java",
             "name": "CodeLens (Launch) - WarehouseContext",
             "request": "launch",
+            "mainClass": "project1.WarehouseContext"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - WarehouseContext",
+            "request": "launch",
             "mainClass": "WarehouseContext",
             "projectName": "project1_75647bd4"
         },

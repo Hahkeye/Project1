@@ -1,15 +1,13 @@
+//package project1;
 import java.util.*;
-
-import project1.Warehouse;
-
 import java.io.*;
 
 public class LoginState extends State{
-    public static final int CLOGIN = 0;
+    public static final int CLOGIN = 2;
     private static final int ULOGIN =1;
-    private static final int ALOGIN = 2;
-    private static final int EXIT = 3;
-    private BufferedReader reader = new BuffreredReader(new InputStreamReader(System.in));
+    private static final int ALOGIN = 3;
+    private static final int EXIT = 0;
+    private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private WarehouseContext context;
     private static LoginState instance;
     private LoginState(){
@@ -25,6 +23,7 @@ public class LoginState extends State{
     public String getResponse(String query){
         do{
             try {
+                System.out.println(query);
                 String line = reader.readLine();
                 StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
                 if (tokenizer.hasMoreTokens()) {
@@ -47,7 +46,7 @@ public class LoginState extends State{
         do{
             try{
                 int value = Integer.parseInt(getResponse("Enter Command: "));
-                if(value <= EXIT && value >= CLOGIN){
+                if(value >= EXIT){
                     return value;
                 }
             }catch(NumberFormatException e){
@@ -56,28 +55,29 @@ public class LoginState extends State{
         }while(true);
     }
     private void clerk(){
-        WarehouseContext.instance().setLogin(WarehouseContext.CLOGIN);
-        WarehouseContext.instance().changeState(0);
+        WarehouseContext.instance().setLogin(CLOGIN);
+        WarehouseContext.instance().changeState(1);
     }
     private void user(){
-        String userID =  getResponse("Enter the userID: ");
+        int cID =  Integer.valueOf(getResponse("Enter the userID: "));
         if(Warehouse.instance().getClient(cID)!=null){
-            WarehouseContext.instance().setLogin(WarehouseContext.ULOGIN);
-            WarehouseContext.instance().setUser(userID);
-            WarehouseContext.instance().changeState(1);
+            WarehouseContext.instance().setLogin(ULOGIN);
+            WarehouseContext.instance().setUser(cID);
+            WarehouseContext.instance().changeState(0);
         }else{
             System.out.println("Bad uid");
         }
     }
     private void admin(){
-        WarehouseContext.instance().setLogin(WarehouseContext.ALOGIN);
+        System.out.println("admingslected");
+        WarehouseContext.instance().setLogin(ALOGIN);
         WarehouseContext.instance().changeState(2);
     }
 
     public void process(){
         int command;
         System.out.println("\tLogin menu"+
-        "1: User login\n"+"2: Clerk\n3: Admin");
+        "\n1: User login\n"+"2: Clerk\n3: Admin");
         while((command= getCommand())!= EXIT){
             switch(command){
                 case CLOGIN:

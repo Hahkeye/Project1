@@ -1,4 +1,4 @@
-package project1;
+//package project1;
 import java.util.*;
 import java.io.*;
 public class Warehouse implements Serializable{
@@ -35,6 +35,9 @@ public class Warehouse implements Serializable{
     }
     public Client getClient(int cID){
         return this.clients.getClient(cID);
+    }
+    public void getClientData(int cID){
+        System.out.println(this.clients.contains(cID));
     }
     public Supplier getSupplier(int sID){
         return this.suppliers.contains(sID);

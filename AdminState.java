@@ -1,4 +1,4 @@
-import project1.Warehouse;
+//package project1;
 import java.util.*;
 import java.text.*;
 import java.io.*;
@@ -27,11 +27,10 @@ public class AdminState extends State{
         return instance;
     }
 
-    public static String getResponse(String query){
+    public String getResponse(String query){
         do{
             try {
-                //System.out.println(query);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println(query);
                 String line = reader.readLine();
                 StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
                 if (tokenizer.hasMoreTokens()) {
@@ -43,7 +42,7 @@ public class AdminState extends State{
             }
         } while(true);
     }
-    public static boolean tOrf(String query){
+    public boolean tOrf(String query){
         String answer = getResponse(query);
         if(answer.charAt(0)=='y'||answer.charAt(0)=='Y'){
             return true;
@@ -61,11 +60,11 @@ public class AdminState extends State{
           }
         } while (true);
       }
-    public int getCommand(){
+      public int getCommand(){
         do{
             try{
                 int value = Integer.parseInt(getResponse("Enter Command: "));
-                if(value <= EXIT && value >= MIMIC){
+                if(value >= EXIT){
                     return value;
                 }
             }catch(NumberFormatException e){
@@ -79,6 +78,19 @@ public class AdminState extends State{
     public void logout(){
         WarehouseContext.instance().changeState(0);
     }
+    public void addProduct(){
+        do{
+            String name = getResponse("Enter product name:");
+            int count = Integer.valueOf(getResponse("Enter Product Stock count: "));
+            double price = Double.valueOf(getResponse("Enter product price: "));
+            int sid = Integer.valueOf(getResponse("Enter Supplier ID:"));
+            warehouse.addProduct(name, count, price,sid);
+            if(!tOrf("Do you want to add another product? y/n?")){
+                break;
+            }
+        }while(true);
+    }
+
     public void menu(){
         System.out.println("Admin Menu:");
         System.out.println(EXIT + " to Exit.");

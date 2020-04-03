@@ -1,7 +1,7 @@
-import java.io.InputStreamReader;
-
-import project1.Warehouse;
-
+//package project1;
+import java.util.*;
+import java.text.*;
+import java.io.*;
 public class WarehouseContext{
     private int state;
     private static Warehouse warehouse;
@@ -12,13 +12,12 @@ public class WarehouseContext{
     public static final int isClerk=0;
     public static final int isUser=1;
     private State[] states;
-    private int[][] nState;
+    private int[][] nextState;
 
-    public static String getResponse(String query){
+    public String getResponse(String query){
         do{
             try {
-                //System.out.println(query);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println(query);
                 String line = reader.readLine();
                 StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
                 if (tokenizer.hasMoreTokens()) {
@@ -30,7 +29,7 @@ public class WarehouseContext{
             }
         } while(true);
     }
-    public static boolean tOrf(String query){
+    public boolean tOrf(String query){
         String answer = getResponse(query);
         if(answer.charAt(0)=='y'||answer.charAt(0)=='Y'){
             return true;
@@ -57,40 +56,38 @@ public class WarehouseContext{
     public int getUser(){return this.userID;}
 
     private WarehouseContext(){
-        if(tOrf(getResponse("Use saved data? y/n?"))){
+        System.out.println("new construct");
+        if (tOrf("Use saved data? y/n?")) {
+            System.out.println("finding save");
             retrieve();
         }else{
+            System.out.println("creating new");
             warehouse = Warehouse.instance();
         }
         states = new State[4];
-        states[0] = ClerkState.instance();
-        states[1] = ClientState.instance();
-        states[2] = LoginState.instance();
-        states[3] = AdminState.instance();
-        nState = new int[4][3];
+        states[0] = ClientState.instance();
+        states[1] = ClerkState.instance();
+        states[2] = AdminState.instance();
+        states[3] = LoginState.instance();
+        nextState = new int[4][3];
         nextState[0][0] = 2;nextState[0][1] = 1;nextState[0][2] = -2;
         nextState[1][0] = 2;nextState[1][1] = 0;nextState[1][2] = -2;
         nextState[2][0] = 2;nextState[2][1] = 0;nextState[2][2] = -2;
         nextState[3][0] = 0;nextState[3][1] = 1;nextState[3][2] = -1;
-        currentState = 2;
+        state = 3;
     }
-    public static WarehouseContext instance(){
-        if(context == null){
-            context = new WarehouseContext();
-        }
-        return context;
-    }
+
     public void changeState(int transition){
-        state = nState[state][transition];
+        state = nextState[state][transition];
         if(state == -2){
             System.out.println("Something broke");
 
         }
         if(state == -1){
-            terminate();\
-            states[state].run();
+            terminate();
+            
         }
-
+        states[state].run();
     }
     private void terminate(){
         if(tOrf("Would you like to save the data?")){
@@ -104,7 +101,34 @@ public class WarehouseContext{
         System.exit(0);
     }
 
+    public static WarehouseContext instance(){
+        if(context == null){
+            System.out.println("constructorpog");
+            context = new WarehouseContext();
+            warehouse.addClient("client1");
+            warehouse.addClient("client2");
+            warehouse.addClient("client3");
+            warehouse.addClient("client4");
+            warehouse.addClient("client5");
+            warehouse.addSupplier("Supplier1");
+            warehouse.addSupplier("Supplier2");
+            warehouse.addSupplier("Supplier3");
+            warehouse.addSupplier("Supplier4");
+            warehouse.addSupplier("Supplier5");
+            warehouse.addProduct("Product1",4,4.0,1);
+            warehouse.addProduct("Product2",7,2.0,2);
+            warehouse.addProduct("Product3",9,1.0,3);
+            warehouse.addProduct("Product4",8,5.0,4);
+            warehouse.addProduct("Product5",1,7.0,1);
+            warehouse.addProduct("Product6",1,7.0,2);
+            warehouse.addProduct("Product7",1,7.0,3);
+            warehouse.addProduct("Product8",1,7.0,4);
+        }
+        return context;
+    }
+    
     public void process(){
+        System.out.println("proccessing");
         states[state].run();
     }
 

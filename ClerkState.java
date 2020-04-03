@@ -1,7 +1,5 @@
+//package project1;
 import java.util.*;
-
-import project1.Warehouse;
-
 import java.text.*;
 import java.io.*;
 public class ClerkState extends State{
@@ -29,11 +27,10 @@ public class ClerkState extends State{
         return instance;
     }
 
-    public static String getResponse(String query){
+    public String getResponse(String query){
         do{
             try {
-                //System.out.println(query);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println(query);
                 String line = reader.readLine();
                 StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
                 if (tokenizer.hasMoreTokens()) {
@@ -45,7 +42,7 @@ public class ClerkState extends State{
             }
         } while(true);
     }
-    public static boolean tOrf(String query){
+    public boolean tOrf(String query){
         String answer = getResponse(query);
         if(answer.charAt(0)=='y'||answer.charAt(0)=='Y'){
             return true;
@@ -63,11 +60,11 @@ public class ClerkState extends State{
           }
         } while (true);
       }
-    public int getCommand(){
+      public int getCommand(){
         do{
             try{
                 int value = Integer.parseInt(getResponse("Enter Command: "));
-                if(value <= EXIT && value >= CLOGIN){
+                if(value >= EXIT){
                     return value;
                 }
             }catch(NumberFormatException e){

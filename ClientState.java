@@ -1,7 +1,6 @@
+//package project1;
 import java.util.*;
-
-import jdk.internal.jline.internal.InputStreamReader;
-
+//import jdk.internal.jline.internal.InputStreamReader;
 import java.text.*;
 import java.io.*;
 public class ClientState extends State{
@@ -17,19 +16,19 @@ public class ClientState extends State{
     private static final int LOGOUT=6;
 
     private ClientState(){
-        warehouse.instance();
+        warehouse=warehouse.instance();
     }
 
     public static ClientState instance(){
         if(clientState == null){
-            return clientState = new ClientState());
+            return clientState = new ClientState();
         }
         return clientState;
     }
-    public static String getResponse(String query){
+    public String getResponse(String query){
         do{
             try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                System.out.println(query);
                 String line = reader.readLine();
                 StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
                 if (tokenizer.hasMoreTokens()) {
@@ -41,7 +40,7 @@ public class ClientState extends State{
             }
         } while(true);
     }
-    public static boolean tOrf(String query){
+    public boolean tOrf(String query){
         String answer = getResponse(query);
         if(answer.charAt(0)=='y'||answer.charAt(0)=='Y'){
             return true;
@@ -59,11 +58,11 @@ public class ClientState extends State{
           }
         } while (true);
       }
-    public int getCommand(){
+      public int getCommand(){
         do{
             try{
                 int value = Integer.parseInt(getResponse("Enter Command: "));
-                if(value <= EXIT && value >= CLOGIN){
+                if(value >= EXIT){
                     return value;
                 }
             }catch(NumberFormatException e){
@@ -72,7 +71,7 @@ public class ClientState extends State{
         }while(true);
     }
     public void editCart(){
-        int cid = getResponse("Enter the clients id:");
+        int cid = Integer.valueOf(getResponse("Enter the clients id:"));
         warehouse.displayCart(cid);
         int item = Integer.valueOf(getResponse("Enter product id:"));
         int adjust = Integer.valueOf(getResponse("Adjust quanity by(0 for none): "));
@@ -90,7 +89,8 @@ public class ClientState extends State{
     }
 
     public void details(){
-        warehouse.getClient(Integer.valueOf(WarehouseContext.instance().getUser())).toString();
+        System.out.println("printing details");
+        warehouse.getClientData(WarehouseContext.instance().getUser());
     }
     public void menu(){
         System.out.println("Client Menu:");
@@ -121,6 +121,7 @@ public class ClientState extends State{
             switch(command){
                 case DETAILS:
                     details();
+                    System.out.println("Details selected");
                 break;
                 case PANDP:
                     pandp();
