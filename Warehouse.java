@@ -190,6 +190,15 @@ public class Warehouse implements Serializable{
             tempP.change(atrib,val);
         }
     }
+    public int waiting(int pid){
+        int x=0;
+        Iterator it = warehouse.clients.getClients();
+        while(it.hasNext()){
+            Client tempC=(Client)it.next();
+            x+=tempC.waiting(pid);
+        }
+        return x;
+    }
     public boolean checkWaitList(int pid,int count){
         Iterator it = warehouse.clients.getClients();
         while(it.hasNext()){

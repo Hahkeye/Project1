@@ -75,9 +75,6 @@ public class AdminState extends State{
     public void userMenu(){
         String userID = getResponse("Please input the user id: ");
     }
-    public void logout(){
-        WarehouseContext.instance().changeState(0);
-    }
     public void addProduct(){
         do{
             String name = getResponse("Enter product name:");
@@ -90,7 +87,34 @@ public class AdminState extends State{
             }
         }while(true);
     }
+    public void addSupplier(){
+        do{
+            String name = getResponse("Enter Supplier name:");
+            warehouse.addSupplier(name);
+            if(!tOrf("Do you want to add another supplier? y/n?")){
+                break;
+            }
+        }while(true);
+    }
+    public void supplierList(){
+        Iterator it = warehouse.getSuppliers();
+        while(it.hasNext()){
+            Supplier tempS = (Supplier) it.next();
+            System.out.println(tempS);
+        }
+    }
+    public void sandp(){
+        warehouse.getSuppliersAndProducts();
+    }
+    public void mimic(){
+        WarehouseContext.instance().changeState(2);
+    }
 
+
+
+    public void logout(){
+        WarehouseContext.instance().changeState(0);
+    }
     public void menu(){
         System.out.println("Admin Menu:");
         System.out.println(EXIT + " to Exit.");
@@ -108,16 +132,16 @@ public class AdminState extends State{
         while((command = getCommand())!= EXIT){
             switch(command){
                 case ADDPRODUCT:
-
+                    addProduct();
                 break;
                 case ADDSUPPIIER:
-                    
+                    addSupplier();
                 break;
                 case SUPPLIERLIST:
-                    
+                    supplierList();
                 break;
                 case SUPPLIERSFORPRODUCT:
-                    
+                    sandp();
                 break;
                 case PRODUCTSFORSUPPLIERS:
                     
@@ -126,7 +150,7 @@ public class AdminState extends State{
                     
                 break;
                 case MIMIC:
-                    
+                    mimic();
                 break;
 
             }

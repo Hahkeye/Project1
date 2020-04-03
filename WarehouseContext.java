@@ -56,37 +56,40 @@ public class WarehouseContext{
     public int getUser(){return this.userID;}
 
     private WarehouseContext(){
-        System.out.println("new construct");
+        //System.out.println("new construct");
         if (tOrf("Use saved data? y/n?")) {
-            System.out.println("finding save");
+            //System.out.println("finding save");
             retrieve();
         }else{
-            System.out.println("creating new");
+            //System.out.println("creating new");
             warehouse = Warehouse.instance();
         }
         states = new State[4];
-        states[0] = ClientState.instance();
-        states[1] = ClerkState.instance();
-        states[2] = AdminState.instance();
-        states[3] = LoginState.instance();
-        nextState = new int[4][3];
-        nextState[0][0] = 2;nextState[0][1] = 1;nextState[0][2] = -2;
-        nextState[1][0] = 2;nextState[1][1] = 0;nextState[1][2] = -2;
-        nextState[2][0] = 2;nextState[2][1] = 0;nextState[2][2] = -2;
-        nextState[3][0] = 0;nextState[3][1] = 1;nextState[3][2] = -1;
-        state = 3;
+        states[0] = LoginState.instance();
+        states[1] = ClientState.instance();
+        states[2] = ClerkState.instance();
+        states[3] = AdminState.instance();
+        nextState = new int[4][4];
+        nextState[0][0] = 1;nextState[0][1] = 2;nextState[0][2] = 3;nextState[0][3] = -1;
+        nextState[1][0] = 2;nextState[1][1] = 0;nextState[1][2] = -2;nextState[1][3] = -2;
+        nextState[2][0] = 3;nextState[2][1] = 0;nextState[2][2] = 1;nextState[2][3] = -2;
+        nextState[3][0] = 0;nextState[3][1] = 2;nextState[3][2] = -2;nextState[3][3] = -2;
+        state = 0;
     }
 
     public void changeState(int transition){
+        //System.out.println("Transition: "+transition+" State: "+state);
         state = nextState[state][transition];
         if(state == -2){
-            System.out.println("Something broke");
+            System.out.println("exiting");
+            terminate();
 
         }
         if(state == -1){
             terminate();
             
         }
+       // System.out.println("going to state : "+state);
         states[state].run();
     }
     private void terminate(){
