@@ -1,4 +1,4 @@
-package project1;
+//package project1;
 import java.util.*;
 import java.io.*;
 public class Warehouse implements Serializable{
@@ -35,6 +35,9 @@ public class Warehouse implements Serializable{
     }
     public Client getClient(int cID){
         return this.clients.getClient(cID);
+    }
+    public void getClientData(int cID){
+        System.out.println(this.clients.contains(cID));
     }
     public Supplier getSupplier(int sID){
         return this.suppliers.contains(sID);
@@ -187,6 +190,15 @@ public class Warehouse implements Serializable{
             tempP.change(atrib,val);
         }
     }
+    public int waiting(int pid){
+        int x=0;
+        Iterator it = warehouse.clients.getClients();
+        while(it.hasNext()){
+            Client tempC=(Client)it.next();
+            x+=tempC.waiting(pid);
+        }
+        return x;
+    }
     public boolean checkWaitList(int pid,int count){
         Iterator it = warehouse.clients.getClients();
         while(it.hasNext()){
@@ -194,6 +206,15 @@ public class Warehouse implements Serializable{
             if(tempC.waiting(pid)<=count){return true;}
         }
         return false;
+    }
+    public void waitlist(int cid){
+        Client tempC= warehouse.clients.contains(cid);
+        if(tempC!=null){
+            Iterator it = tempC.getWaitList();
+            while(it.hasNext()){
+                System.out.println(it);
+            }
+        }
     }
     public void recieve(int id, int count){
         Iterator it = warehouse.clients.getClients();
