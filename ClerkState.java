@@ -16,6 +16,7 @@ public class ClerkState extends State{
     private static final int WAITLISTS=6;
     private static final int SHIPMENT=7;
     private static final int PAYMENT=8;
+    private static final int PROCESS=9;
     
     private ClerkState(){
         super();
@@ -61,8 +62,9 @@ public class ClerkState extends State{
           }
         } while (true);
       }
-      public int getCommand(){
+    public int getCommand(){
         do{
+            menu();
             try{
                 int value = Integer.parseInt(getResponse("Enter Command: "));
                 if(value >= EXIT){
@@ -74,9 +76,10 @@ public class ClerkState extends State{
         }while(true);
     }
     public void userMenu(){
-        String userID = getResponse("Please input the user id: ");
-        //if(WarehouseContext.instance().s)
-        //check if they exists
+        int userID = Integer.valueOf(getResponse("Please input the user id: "));
+        if(warehouse.getClient(userID)!=null){
+            WarehouseContext.instance().changeState(1);
+        }
     }
     public void add(){
         do{
@@ -135,6 +138,10 @@ public class ClerkState extends State{
         Double price = Double.valueOf(getResponse("Enter amount being payed: "));
         System.out.println("the payment was "+warehouse.pay(cid, price));
     }
+    public void processOrder(){
+        int cid = Integer.valueOf(getResponse("Enter client ID: "));
+        System.out.println(warehouse.processOrder(cid));
+    }
     public void waitlist(){
         int pid =  Integer.valueOf(getResponse("Enter product id: "));
         int waiting = warehouse.waiting(pid);
@@ -145,10 +152,15 @@ public class ClerkState extends State{
         }
     }
     public void logout(){
-        WarehouseContext.instance().changeState(0);
+        if(WarehouseContext.instance().getLogin()==WarehouseContext.isAdmin){
+            WarehouseContext.instance().changeState(3);
+        }else{
+            WarehouseContext.instance().changeState(0);
+        }
+        
     }
     public void menu(){
-        System.out.println("Clerk Menu:");
+        System.out.println("\n\tClerk Menu:");
         System.out.println(EXIT + " to Exit/Logout.");
         System.out.println(ADD + ": Add Client");
         System.out.println(PANDP + ": Show products");
@@ -158,6 +170,7 @@ public class ClerkState extends State{
         System.out.println(WAITLISTS + ": Waitlist for a product");
         System.out.println(SHIPMENT + ": Recive a shipment");
         System.out.println(PAYMENT + ": Record a payment");
+        System.out.println(PROCESS + ": Process Order");
 
     }
     public void process(){
@@ -189,8 +202,12 @@ public class ClerkState extends State{
                 case PAYMENT:
                     payment();
                 break;
+                case PROCESS:
+                    processOrder();
+                break;
             }
         }
+        logout();
     }
 
 

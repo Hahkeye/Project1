@@ -11,6 +11,7 @@ public class WarehouseContext{
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     public static final int isClerk=0;
     public static final int isUser=1;
+    public static final int isAdmin=2;
     private State[] states;
     private int[][] nextState;
 
@@ -70,10 +71,14 @@ public class WarehouseContext{
         states[2] = ClerkState.instance();
         states[3] = AdminState.instance();
         nextState = new int[4][4];
-        nextState[0][0] = 1;nextState[0][1] = 2;nextState[0][2] = 3;nextState[0][3] = -1;
-        nextState[1][0] = 2;nextState[1][1] = 0;nextState[1][2] = -2;nextState[1][3] = -2;
-        nextState[2][0] = 3;nextState[2][1] = 0;nextState[2][2] = 1;nextState[2][3] = -2;
-        nextState[3][0] = 0;nextState[3][1] = 2;nextState[3][2] = -2;nextState[3][3] = -2;
+        //Login
+        nextState[0][0] = -1;nextState[0][1] = 1;nextState[0][2] = 2;nextState[0][3] = 3;
+        //Client
+        nextState[1][0] = 0;nextState[1][1] = -1;nextState[1][2] = 2;nextState[1][3] = 3;
+        //Clerk
+        nextState[2][0] = 0;nextState[2][1] = 1;nextState[2][2] = -1;nextState[2][3] = 3;
+        //Admin
+        nextState[3][0] = 0;nextState[3][1] = -2;nextState[3][2] = 2;nextState[3][3] = -2;
         state = 0;
     }
 
@@ -89,7 +94,7 @@ public class WarehouseContext{
             terminate();
             
         }
-       // System.out.println("going to state : "+state);
+        System.out.println("going to state : "+state);
         states[state].run();
     }
     private void terminate(){
@@ -106,7 +111,7 @@ public class WarehouseContext{
 
     public static WarehouseContext instance(){
         if(context == null){
-            System.out.println("constructorpog");
+            //System.out.println("constructorpog");
             context = new WarehouseContext();
             warehouse.addClient("client1");
             warehouse.addClient("client2");
@@ -131,7 +136,7 @@ public class WarehouseContext{
     }
     
     public void process(){
-        System.out.println("proccessing");
+        //System.out.println("proccessing");
         states[state].run();
     }
 

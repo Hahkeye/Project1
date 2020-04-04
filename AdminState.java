@@ -63,6 +63,7 @@ public class AdminState extends State{
       public int getCommand(){
         do{
             try{
+                menu();
                 int value = Integer.parseInt(getResponse("Enter Command: "));
                 if(value >= EXIT){
                     return value;
@@ -72,9 +73,9 @@ public class AdminState extends State{
             }
         }while(true);
     }
-    public void userMenu(){
-        String userID = getResponse("Please input the user id: ");
-    }
+    // public void userMenu(){
+    //     String userID = getResponse("Please input the user id: ");
+    // }
     public void addProduct(){
         do{
             String name = getResponse("Enter product name:");
@@ -109,20 +110,38 @@ public class AdminState extends State{
     public void mimic(){
         WarehouseContext.instance().changeState(2);
     }
-
+    public void modify(){
+        do{
+            int pid = Integer.valueOf(getResponse("Enter ProductID: "));
+            int sid = Integer.valueOf(getResponse("Enter Supplier ID:"));
+            Product tempP=warehouse.getProduct(pid);
+            Supplier tempS=warehouse.getSupplier(sid);
+            if(tempP!=null && tempS!=null){
+                tempP.setSupplier(tempS);
+            }   
+            if(!tOrf("Do you want to change another product? y/n?")){
+                break;
+            }
+        }while(true);
+    }
 
 
     public void logout(){
-        WarehouseContext.instance().changeState(0);
+        if(WarehouseContext.instance().getLogin()==WarehouseContext.isAdmin){
+            WarehouseContext.instance().changeState(0);
+        }else{
+            WarehouseContext.instance().changeState(3);
+        }
+        
     }
     public void menu(){
-        System.out.println("Admin Menu:");
+        System.out.println("\n\tAdmin Menu:");
         System.out.println(EXIT + " to Exit.");
         System.out.println(ADDPRODUCT + ": Add Product");
         System.out.println(ADDSUPPIIER + ": Add Suplier");
         System.out.println(SUPPLIERLIST + ": Supplier List");
-        System.out.println(SUPPLIERSFORPRODUCT + ": Products with assoiated suppliers");
-        System.out.println(PRODUCTSFORSUPPLIERS + ": Suppliers with associated products");
+        System.out.println(SUPPLIERSFORPRODUCT + ": Products with assoiated suppliers");// Satisfys D and E
+        // System.out.println(PRODUCTSFORSUPPLIERS + ": Suppliers with associated products");
         System.out.println(ADDSUPPLIERTOPRODUCT + ": Add supplier to product");
         System.out.println(MIMIC + ": Login as clerk");
     }
@@ -143,11 +162,8 @@ public class AdminState extends State{
                 case SUPPLIERSFORPRODUCT:
                     sandp();
                 break;
-                case PRODUCTSFORSUPPLIERS:
-                    
-                break;
                 case ADDSUPPLIERTOPRODUCT:
-                    
+                    modify();
                 break;
                 case MIMIC:
                     mimic();
@@ -155,6 +171,7 @@ public class AdminState extends State{
 
             }
         }
+        logout();
     }
 
 
