@@ -14,7 +14,6 @@ public class ClientState extends State{
     private static final int EDITCART=4;
     private static final int WAITLIST=5;
     private static final int ADD = 6;
-    //private static final int LOGOUT=6;
 
     private ClientState(){
         warehouse=warehouse.instance();
@@ -114,7 +113,7 @@ public class ClientState extends State{
         warehouse.getClientData(WarehouseContext.instance().getUser());
     }
     public void menu(){
-        System.out.println("\nClient Menu:");
+        System.out.println("\n\tClient Menu:");
         System.out.println(EXIT + " to Exit/Logout.");
         System.out.println(DETAILS + ": Show Details");
         System.out.println(PANDP + ": Products and Prices");
@@ -122,7 +121,6 @@ public class ClientState extends State{
         System.out.println(EDITCART + ": Edit Cart");
         System.out.println(WAITLIST + ": Display Waitlist");
         System.out.println(ADD + ": Add to cart");
-        //System.out.println(EXIT + ": Logout");
 
     }
     public void logout(){
@@ -130,11 +128,11 @@ public class ClientState extends State{
         System.out.println("Exiting");
         if(WarehouseContext.instance().getLogin() == WarehouseContext.isClerk){
             System.out.println("Exiting to clerk");
-            WarehouseContext.instance().changeState(1);
+            WarehouseContext.instance().changeState(2);
         }
         else if(WarehouseContext.instance().getLogin() == WarehouseContext.isUser){
             System.out.println("Exiting to login");
-            WarehouseContext.instance().changeState(2);
+            WarehouseContext.instance().changeState(0);
         }else{
             System.out.println("Exiting to admin");
             WarehouseContext.instance().changeState(0);

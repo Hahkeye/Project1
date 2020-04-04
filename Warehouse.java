@@ -59,11 +59,12 @@ public class Warehouse implements Serializable{
         Iterator it = this.suppliers.getSuppliers();
         while(it.hasNext()){
             Supplier s = (Supplier)it.next();
-            System.out.println(s.getName());
+            System.out.println("Name: "+s.getName()+"|ID:"+s.getID());
             Iterator it2 = s.getItems();
             while(it2.hasNext()){
                 Map.Entry<Product,Integer> temp = (Map.Entry<Product,Integer>)it2.next();
-                System.out.println("\t"+((Product)temp.getKey()).getName()+"|"+temp.getValue());
+                Product tempP = (Product)temp.getKey();
+                System.out.println("\t"+tempP.getName()+"|ID:"+tempP.getID()+"|"+temp.getValue());
             }
 
         }

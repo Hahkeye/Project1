@@ -4,7 +4,7 @@ import java.io.*;
 
 public class LoginState extends State{
     public static final int CLOGIN = 2;
-    private static final int ULOGIN =1;
+    private static final int ULOGIN = 1;
     private static final int ALOGIN = 3;
     private static final int EXIT = 0;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -14,7 +14,7 @@ public class LoginState extends State{
         super();
     }
 
-    public  static LoginState instance(){
+    public static LoginState instance(){
         if(instance == null){
             instance = new LoginState();
         }
@@ -55,29 +55,29 @@ public class LoginState extends State{
         }while(true);
     }
     private void clerk(){
-        WarehouseContext.instance().setLogin(CLOGIN);
-        WarehouseContext.instance().changeState(1);
+        WarehouseContext.instance().setLogin(WarehouseContext.isClerk);
+        WarehouseContext.instance().changeState(2);
     }
     private void user(){
         int cID =  Integer.valueOf(getResponse("Enter the userID: "));
         if(Warehouse.instance().getClient(cID)!=null){
-            WarehouseContext.instance().setLogin(ULOGIN);
+            WarehouseContext.instance().setLogin(WarehouseContext.isUser);
             WarehouseContext.instance().setUser(cID);
-            WarehouseContext.instance().changeState(0);
+            WarehouseContext.instance().changeState(1);
         }else{
             System.out.println("Bad uid");
         }
     }
     private void admin(){
         System.out.println("admingslected");
-        WarehouseContext.instance().setLogin(ALOGIN);
-        WarehouseContext.instance().changeState(2);
+        WarehouseContext.instance().setLogin(WarehouseContext.isAdmin);
+        WarehouseContext.instance().changeState(3);
     }
 
     public void process(){
         int command;
         System.out.println("\tLogin menu"+
-        "\n1: User login\n"+"2: Clerk\n3: Admin");
+        "\n1: User login\n"+"2: Clerk\n3: Admin\n0: Exit");
         while((command= getCommand())!= EXIT){
             switch(command){
                 case CLOGIN:
@@ -93,6 +93,7 @@ public class LoginState extends State{
                     System.out.println("broke;");
             }
         }
+        WarehouseContext.instance().changeState(0);
     }
 
     public void run(){
