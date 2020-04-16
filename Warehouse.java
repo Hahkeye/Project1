@@ -36,21 +36,27 @@ public class Warehouse implements Serializable{
     public Client getClient(int cID){
         return this.clients.getClient(cID);
     }
-    public void getClientData(int cID){
-        System.out.println(this.clients.contains(cID));
+    public String getClientData(int cID){
+        return this.clients.contains(cID).toString();
     }
     public Supplier getSupplier(int sID){
         return this.suppliers.contains(sID);
     }
-    public void getTransactions(int cid){//part 9
+    public String getTransactions(int cid){//part 9
+        String tempS = "";
         Client target = this.clients.contains(cid);
         if(target!=null){
             Iterator it = target.getTransactions();
-            while(it.hasNext()){
-                System.out.println(it.next());
+            if(!it.hasNext()){
+                return "Empty";
+            }else{
+                while(it.hasNext()){
+                    tempS+="\n"+it.next();
+                 }
             }
-
+            
         }
+        return tempS;
     }
     public void getClientsWithBalance(){//part 9
         this.clients.withBalance();
@@ -128,15 +134,24 @@ public class Warehouse implements Serializable{
     public boolean editCart(int cid,int item,int count){
         Client tempC=clients.contains(cid);
         if(tempC!=null){
-            tempC.cartAdjust(item, count);
+            return tempC.cartAdjust(item, count);
         }
         return false;
     }
-    public void displayCart(int cid){
+    public String displayCart(int cid){
+        //String tempS = "";
         Client tempC=clients.contains(cid);
         if(tempC!=null){
-            tempC.cart();
+            return tempC.cart();
         }
+        return null;
+    }
+    public int cartSize(int cid){
+        Client tempC=clients.contains(cid);
+        if(tempC!=null){
+            return tempC.getCartSize();
+        }
+        return -1;
     }
     public boolean pay(int cid, double amount){
         Client tempC =  warehouse.clients.contains(cid);
@@ -208,14 +223,16 @@ public class Warehouse implements Serializable{
         }
         return false;
     }
-    public void waitlist(int cid){
+    public String waitlist(int cid){
+        String tempS = "";
         Client tempC= warehouse.clients.contains(cid);
         if(tempC!=null){
             Iterator it = tempC.getWaitList();
             while(it.hasNext()){
-                System.out.println(it);
+                tempS+="\n"+it;
             }
         }
+        return tempS;
     }
     public void recieve(int id, int count){
         Iterator it = warehouse.clients.getClients();

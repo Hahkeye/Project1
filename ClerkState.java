@@ -1,11 +1,15 @@
 //package project1;
 import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.*;
 import java.io.*;
-public class ClerkState extends State{
+public class ClerkState extends State implements ActionListener{
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Warehouse warehouse;
     private WarehouseContext context;
+    private static JPanel panel;
     private static ClerkState instance;
     private static final int EXIT = 0;
     private static final int ADD=1;
@@ -17,6 +21,7 @@ public class ClerkState extends State{
     private static final int SHIPMENT=7;
     private static final int PAYMENT=8;
     private static final int PROCESS=9;
+    private AbstractButton logoutButton, addButton, pandpButton, clientButton, outstandingButton, mimicButton, waitlistButton, shipmentButton, paymentButton, processButton;
     
     private ClerkState(){
         super();
@@ -44,37 +49,14 @@ public class ClerkState extends State{
             }
         } while(true);
     }
-    public boolean tOrf(String query){
-        String answer = getResponse(query);
+    public boolean tOrf(String query,String title){
+        String answer = JOptionPane.showInputDialog(panel, query, title, 3);
         if(answer.charAt(0)=='y'||answer.charAt(0)=='Y'){
             return true;
         }
         return false;
     }
-    public int getNumber(String prompt) {
-        do {
-          try {
-            String item = getResponse(prompt);
-            Integer num = Integer.valueOf(item);
-            return num.intValue();
-          } catch (NumberFormatException e) {
-            System.out.println("Please input a number ");
-          }
-        } while (true);
-      }
-    public int getCommand(){
-        do{
-            menu();
-            try{
-                int value = Integer.parseInt(getResponse("Enter Command: "));
-                if(value >= EXIT){
-                    return value;
-                }
-            }catch(NumberFormatException e){
-                    System.out.println(e);
-            }
-        }while(true);
-    }
+
     public void userMenu(){
         int userID = Integer.valueOf(getResponse("Please input the user id: "));
         if(warehouse.getClient(userID)!=null){
@@ -85,7 +67,7 @@ public class ClerkState extends State{
         do{
             String name = getResponse("Enter name:");
             warehouse.addClient(name);
-            if(!tOrf("Do you want to add another Client? y/n?")){
+            if(!tOrf("Do you want to add another Client? y/n?","Multi-Client prompt")){
                 break;
             }
         }while(true);
@@ -122,7 +104,7 @@ public class ClerkState extends State{
             int pid = Integer.valueOf(getResponse("Enter the product ID: "));
             int count = Integer.valueOf(getResponse("Enter count coming in: "));
             if(warehouse.checkWaitList(pid,count)){
-                if(tOrf("Do you want to fill the waitlist?y/n?")){
+                if(tOrf("Do you want to fill the waitlist?y/n?","Waitlist prompt")){
                     warehouse.recieve(pid, count);
                 }else{
                     warehouse.adjustProduct(pid, count);
@@ -131,7 +113,7 @@ public class ClerkState extends State{
             if(warehouse.existsP(pid)){
                 warehouse.adjustProduct(pid, count);
             }
-        }while(tOrf("Would you like to enter another product?"));
+        }while(tOrf("Would you like to enter another product?","Multi-product prompt"));
     }
     public void payment(){
         int cid = Integer.valueOf(getResponse("Enter client id:"));
@@ -157,61 +139,56 @@ public class ClerkState extends State{
         }else{
             WarehouseContext.instance().changeState(0);
         }
+        //WarehouseContext.instance().getFrame().removeAll();
         
     }
-    public void menu(){
-        System.out.println("\n\tClerk Menu:");
-        System.out.println(EXIT + " to Exit/Logout.");
-        System.out.println(ADD + ": Add Client");
-        System.out.println(PANDP + ": Show products");
-        System.out.println(CLIENTS + ": Show Clients");
-        System.out.println(OUSTANDING + ": Oustanding Clients");
-        System.out.println(MIMIC + ": Become a Client");
-        System.out.println(WAITLISTS + ": Waitlist for a product");
-        System.out.println(SHIPMENT + ": Recive a shipment");
-        System.out.println(PAYMENT + ": Record a payment");
-        System.out.println(PROCESS + ": Process Order");
 
-    }
-    public void process(){
-        int command;
-        menu();
-        while((command = getCommand())!= EXIT){
-            switch(command){
-                case ADD:
-                    add();
-                break;
-                case PANDP:
-                    pandp();
-                break;
-                case CLIENTS:
-                    clients();
-                break;
-                case OUSTANDING:
-                    outstanding();
-                break;
-                case MIMIC:
-                    mimic();
-                break;
-                case WAITLISTS:
-                    waitlist();
-                break;
-                case SHIPMENT:
-                    shipment();
-                break;
-                case PAYMENT:
-                    payment();
-                break;
-                case PROCESS:
-                    processOrder();
-                break;
-            }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource().equals(this.logoutButton)){
+            panel.setVisible(false);
+            logout();
         }
-        logout();
+
     }
 
 
     public void run(){
-        process();
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        addButton = new JButton("Add Client");
+        pandpButton = new JButton("Show Products");
+        clientButton = new JButton("Show Clients");
+        outstandingButton = new JButton("Oustanding Clients");
+        mimicButton = new JButton("Become a Client");
+        waitlistButton = new JButton("Waitlist for a product");
+        shipmentButton =  new JButton("Recive a shipment");
+        paymentButton = new JButton("Record a payment");
+        processButton = new JButton("Process Order");
+        logoutButton = new JButton("Logout");
+        panel.add(addButton);
+        panel.add(pandpButton);
+        panel.add(clientButton);
+        panel.add(outstandingButton);
+        panel.add(mimicButton);
+        panel.add(waitlistButton);
+        panel.add(shipmentButton);
+        panel.add(paymentButton);
+        panel.add(processButton);
+        panel.add(logoutButton);
+        addButton.addActionListener(this);
+        pandpButton.addActionListener(this);
+        clientButton.addActionListener(this);
+        outstandingButton.addActionListener(this);
+        mimicButton.addActionListener(this);
+        waitlistButton.addActionListener(this);
+        shipmentButton.addActionListener(this);
+        paymentButton.addActionListener(this);
+        processButton.addActionListener(this);
+        logoutButton.addActionListener(this);
+        panel.setVisible(true);
+        panel.paint(panel.getGraphics());
+        WarehouseContext.instance().getFrame().add(panel);
+        WarehouseContext.instance().getFrame().validate();
     }
 }

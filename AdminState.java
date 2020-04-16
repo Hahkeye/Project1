@@ -1,20 +1,25 @@
 //package project1;
 import java.util.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.*;
 import java.io.*;
-public class AdminState extends State{
+public class AdminState extends State implements ActionListener{
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Warehouse warehouse;
     private WarehouseContext context;
+    private JPanel panel;
     private static AdminState instance;
-    private static final int EXIT = 0;
-    private static final int ADDPRODUCT=1;
-    private static final int ADDSUPPIIER=2;
-    private static final int SUPPLIERLIST=3;
-    private static final int SUPPLIERSFORPRODUCT=4;
-    private static final int PRODUCTSFORSUPPLIERS=5;
-    private static final int ADDSUPPLIERTOPRODUCT=6;
-    private static final int MIMIC=7;
+    // private static final int EXIT = 0;
+    // private static final int ADDPRODUCT=1;
+    // private static final int ADDSUPPIIER=2;
+    // private static final int SUPPLIERLIST=3;
+    // private static final int SUPPLIERSFORPRODUCT=4;
+    // private static final int PRODUCTSFORSUPPLIERS=5;
+    // private static final int ADDSUPPLIERTOPRODUCT=6;
+    // private static final int MIMIC=7;
+    private AbstractButton logoutButton, addPButton, addSButton, supplierButton, sandpButton, pandsButton, addstopButton, mimicButton;
     
     private AdminState(){
         super();
@@ -48,30 +53,6 @@ public class AdminState extends State{
             return true;
         }
         return false;
-    }
-    public int getNumber(String prompt) {
-        do {
-          try {
-            String item = getResponse(prompt);
-            Integer num = Integer.valueOf(item);
-            return num.intValue();
-          } catch (NumberFormatException e) {
-            System.out.println("Please input a number ");
-          }
-        } while (true);
-      }
-      public int getCommand(){
-        do{
-            try{
-                menu();
-                int value = Integer.parseInt(getResponse("Enter Command: "));
-                if(value >= EXIT){
-                    return value;
-                }
-            }catch(NumberFormatException e){
-                    System.out.println(e);
-            }
-        }while(true);
     }
     // public void userMenu(){
     //     String userID = getResponse("Please input the user id: ");
@@ -132,51 +113,48 @@ public class AdminState extends State{
         }else{
             WarehouseContext.instance().changeState(3);
         }
-        
+        //WarehouseContext.instance().getFrame().removeAll();
     }
-    public void menu(){
-        System.out.println("\n\tAdmin Menu:");
-        System.out.println(EXIT + " to Exit.");
-        System.out.println(ADDPRODUCT + ": Add Product");
-        System.out.println(ADDSUPPIIER + ": Add Suplier");
-        System.out.println(SUPPLIERLIST + ": Supplier List");
-        System.out.println(SUPPLIERSFORPRODUCT + ": Products with assoiated suppliers");// Satisfys D and E
-        // System.out.println(PRODUCTSFORSUPPLIERS + ": Suppliers with associated products");
-        System.out.println(ADDSUPPLIERTOPRODUCT + ": Add supplier to product");
-        System.out.println(MIMIC + ": Login as clerk");
-    }
-    public void process(){
-        int command;
-        menu();
-        while((command = getCommand())!= EXIT){
-            switch(command){
-                case ADDPRODUCT:
-                    addProduct();
-                break;
-                case ADDSUPPIIER:
-                    addSupplier();
-                break;
-                case SUPPLIERLIST:
-                    supplierList();
-                break;
-                case SUPPLIERSFORPRODUCT:
-                    sandp();
-                break;
-                case ADDSUPPLIERTOPRODUCT:
-                    modify();
-                break;
-                case MIMIC:
-                    mimic();
-                break;
 
-            }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource().equals(this.logoutButton)){
+            panel.setVisible(false);
+            logout();
         }
-        logout();
+
     }
 
 
     public void run(){
-        process();
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        addPButton = new JButton("Add Product");
+        addSButton = new JButton("Add Supplier");
+        supplierButton = new JButton("Supplier list");
+        sandpButton = new JButton("Suppliers and products");
+        addstopButton = new JButton("Add supplier to product");
+        mimicButton = new JButton("Login as clerk");
+        logoutButton = new JButton("Logout");
+        panel.add(addPButton);
+        panel.add(addSButton);
+        panel.add(supplierButton);
+        panel.add(sandpButton);
+        panel.add(addstopButton);
+        panel.add(mimicButton);
+        panel.add(logoutButton);
+        addPButton.addActionListener(this);
+        addSButton.addActionListener(this);
+        supplierButton.addActionListener(this);
+        sandpButton.addActionListener(this);
+        addstopButton.addActionListener(this);
+        mimicButton.addActionListener(this);
+        logoutButton.addActionListener(this);
+        panel.setVisible(true);
+        panel.paint(panel.getGraphics());
+        WarehouseContext.instance().getFrame().add(panel);
+        WarehouseContext.instance().getFrame().validate();
     }
-    
 }
+
+//private AbstractButton exitButton, addPButton, addSButton, supplierButton, sandpButton, pandsButton, addstopButton, mimicButton;

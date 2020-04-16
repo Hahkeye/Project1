@@ -1,5 +1,9 @@
 //package project1;
 import java.util.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.*;
 import java.io.*;
 public class WarehouseContext{
@@ -8,6 +12,7 @@ public class WarehouseContext{
     private static WarehouseContext context;
     private int currentUser;
     private int userID;
+    private static JFrame warehouseFrame;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     public static final int isClerk=0;
     public static final int isUser=1;
@@ -30,8 +35,8 @@ public class WarehouseContext{
             }
         } while(true);
     }
-    public boolean tOrf(String query){
-        String answer = getResponse(query);
+    public boolean tOrf(String query,String title){
+        String answer = JOptionPane.showInputDialog(warehouseFrame, query, title, 3);
         if(answer.charAt(0)=='y'||answer.charAt(0)=='Y'){
             return true;
         }
@@ -55,10 +60,11 @@ public class WarehouseContext{
     public void setUser(int uID){this.userID=uID;}
     public int getLogin(){return this.currentUser;}
     public int getUser(){return this.userID;}
+    public JFrame getFrame(){return this.warehouseFrame;}
 
     private WarehouseContext(){
         //System.out.println("new construct");
-        if (tOrf("Use saved data? y/n?")) {
+        if (tOrf("Use saved data? y/n?","Saved Data")) {
             //System.out.println("finding save");
             retrieve();
         }else{
@@ -80,10 +86,14 @@ public class WarehouseContext{
         //Admin
         nextState[3][0] = 0;nextState[3][1] = -2;nextState[3][2] = 2;nextState[3][3] = -2;
         state = 0;
-    }
-
+        warehouseFrame = new JFrame("Warehouse inventory");
+        warehouseFrame.addWindowListener(new WindowAdapter()
+        {public void windowClosing(WindowEvent e){System.exit(0);}});
+        warehouseFrame.setSize(400,400);
+        warehouseFrame.setLocation(400,400);
+    }  
     public void changeState(int transition){
-        //System.out.println("Transition: "+transition+" State: "+state);
+        //System.out.println("\nTransition: "+transition+" State: "+state);
         state = nextState[state][transition];
         if(state == -2){
             System.out.println("exiting");
@@ -98,7 +108,7 @@ public class WarehouseContext{
         states[state].run();
     }
     private void terminate(){
-        if(tOrf("Would you like to save the data?")){
+        if(tOrf("Would you like to save?", "Save Dialog")){
             if(warehouse.save()){
                 System.out.println("Saved to library");
             }else{
@@ -142,6 +152,8 @@ public class WarehouseContext{
 
     public static void main(String[] args){
         WarehouseContext.instance().process();
+        WarehouseContext.instance().getFrame().setVisible(true);
+        //states[state].run();
     }
 
 }

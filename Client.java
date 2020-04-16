@@ -27,6 +27,7 @@ public class Client implements Serializable{
     public String getName(){return this.name;}
     public String getAddress(){return this.address;}
     public double getBalance(){return this.balance;}
+    public int getCartSize(){return this.cart.size();}
     public Iterator getCart(){return this.cart.iterator();}
     public Iterator getTransactions(){return this.transactionList.iterator();}
     public Iterator getWaitList(){return this.waitlist.iterator();}
@@ -95,40 +96,33 @@ public class Client implements Serializable{
         }
         
     }
-    // public void addProduct(int pid,int quaity){
-    //     AbstractMap.SimpleEntry<Product,Integer> temp = contains(pid);
-    //     if(temp!=null){
-    //         temp.setValue(temp.getValue()+quaity);
-    //     }else{
-    //         cart.add(new AbstractMap.SimpleEntry<>(pid,quaity));
-    //     }
-        
-    // }
     public double adjustBalance(double adjustNumber){
         return(this.balance+=adjustNumber);
     }
     public boolean cartAdjust(int pid,int count){
         AbstractMap.SimpleEntry<Product,Integer> tempE = contains(pid);
         if(tempE!=null){
-            if(count!=0){
+            if(count!=0 && (tempE.getValue()+count!=0)){
                 tempE.setValue(tempE.getValue()+count);
                 return true;
             }else{
                 this.cart.remove(tempE);
                 return true;
             }
+            //return false;
         }
         return false;
     }
-    public void cart(){
-        int count=1;
+    public String cart(){
+        String tempS="";
+        //int count=1;
         Iterator it = cart.iterator();
         while(it.hasNext()){
             AbstractMap.SimpleEntry<Product,Integer> pair = (AbstractMap.SimpleEntry<Product,Integer>)it.next();
             Product tempP = pair.getKey();
-            System.out.println(count+":"+" "+tempP.getName()+"|Id:"+tempP.getID()+"|Count:"+pair.getValue()+"\n");
-            count++;
+            tempS+=(":"+" "+tempP.getName()+"|Id:"+tempP.getID()+"|Count:"+pair.getValue()+"\n");
         }
+        return tempS;
     }
     public void change(int index,String val){
         switch(index){
@@ -169,6 +163,6 @@ public class Client implements Serializable{
         System.out.println(this.atribs);
     }
     public String toString(){
-        return this.ID+"|"+this.name+"|$"+this.balance+"|Cart:"+this.cart.toString()+"|WaitList:"+this.waitlist.toString();
+        return "ID: "+this.ID+"\nName: "+this.name+"\nBalance: $"+this.balance+"\nCart: "+this.cart.toString()+"\nWaitList: "+this.waitlist.toString();
     }
 }
