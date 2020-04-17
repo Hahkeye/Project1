@@ -10,15 +10,9 @@ public class AdminState extends State implements ActionListener{
     private static Warehouse warehouse;
     private WarehouseContext context;
     private JPanel panel;
+    private JTextArea text;
+    private JScrollPane scroll;
     private static AdminState instance;
-    // private static final int EXIT = 0;
-    // private static final int ADDPRODUCT=1;
-    // private static final int ADDSUPPIIER=2;
-    // private static final int SUPPLIERLIST=3;
-    // private static final int SUPPLIERSFORPRODUCT=4;
-    // private static final int PRODUCTSFORSUPPLIERS=5;
-    // private static final int ADDSUPPLIERTOPRODUCT=6;
-    // private static final int MIMIC=7;
     private AbstractButton logoutButton, addPButton, addSButton, supplierButton, sandpButton, pandsButton, addstopButton, mimicButton;
     
     private AdminState(){
@@ -31,24 +25,8 @@ public class AdminState extends State implements ActionListener{
         }
         return instance;
     }
-
-    public String getResponse(String query){
-        do{
-            try {
-                System.out.println(query);
-                String line = reader.readLine();
-                StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
-                if (tokenizer.hasMoreTokens()) {
-                    return tokenizer.nextToken();
-                }
-            } 
-            catch (IOException ioe) {
-                System.exit(0);
-            }
-        } while(true);
-    }
-    public boolean tOrf(String query){
-        String answer = getResponse(query);
+    public boolean tOrf(String query,String title){
+        String answer = JOptionPane.showInputDialog(panel, query, title, 3);
         if(answer.charAt(0)=='y'||answer.charAt(0)=='Y'){
             return true;
         }
@@ -59,21 +37,21 @@ public class AdminState extends State implements ActionListener{
     // }
     public void addProduct(){
         do{
-            String name = getResponse("Enter product name:");
-            int count = Integer.valueOf(getResponse("Enter Product Stock count: "));
-            double price = Double.valueOf(getResponse("Enter product price: "));
-            int sid = Integer.valueOf(getResponse("Enter Supplier ID:"));
+            String name = JOptionPane.showInputDialog(panel, "Enter the name of the product.", "New Product", 3);
+            int count = Integer.valueOf(JOptionPane.showInputDialog(panel, "Enter the stock count.", "New Product", 3));
+            double price = Double.valueOf(JOptionPane.showInputDialog(panel, "Enter the price.", "New Product", 3));
+            int sid = Integer.valueOf(JOptionPane.showInputDialog(panel, "Enter the supplier id.", "New Product", 3));
             warehouse.addProduct(name, count, price,sid);
-            if(!tOrf("Do you want to add another product? y/n?")){
+            if(!tOrf("Do you want to add another product? y/n?","Multiple Products")){
                 break;
             }
         }while(true);
     }
     public void addSupplier(){
         do{
-            String name = getResponse("Enter Supplier name:");
+            String name = JOptionPane.showInputDialog(panel, "Enter the name of the supplier.", "New Supplier", 3);
             warehouse.addSupplier(name);
-            if(!tOrf("Do you want to add another supplier? y/n?")){
+            if(!tOrf("Do you want to add another supplier? y/n?","Multiple Suppliers")){
                 break;
             }
         }while(true);
@@ -89,18 +67,19 @@ public class AdminState extends State implements ActionListener{
         warehouse.getSuppliersAndProducts();
     }
     public void mimic(){
+        panel.setVisible(false);;
         WarehouseContext.instance().changeState(2);
     }
     public void modify(){
         do{
-            int pid = Integer.valueOf(getResponse("Enter ProductID: "));
-            int sid = Integer.valueOf(getResponse("Enter Supplier ID:"));
+            int pid = Integer.valueOf(JOptionPane.showInputDialog(panel, "What is the product ID?", "Supplier Change", 3));
+            int sid = Integer.valueOf(JOptionPane.showInputDialog(panel, "What is the supplier ID?", "Supplier Change", 3));
             Product tempP=warehouse.getProduct(pid);
             Supplier tempS=warehouse.getSupplier(sid);
             if(tempP!=null && tempS!=null){
                 tempP.setSupplier(tempS);
             }   
-            if(!tOrf("Do you want to change another product? y/n?")){
+            if(!tOrf("Do you want to change another product? y/n?","Multiple modifys")){
                 break;
             }
         }while(true);
@@ -122,12 +101,34 @@ public class AdminState extends State implements ActionListener{
             panel.setVisible(false);
             logout();
         }
-
+        else if(e.getSource().equals(this.addPButton)){
+            addProduct();
+        }
+        else if(e.getSource().equals(this.addSButton)){
+            addSupplier();
+        }
+        else if(e.getSource().equals(this.addPButton)){
+            supplierList();
+        }
+        else if(e.getSource().equals(this.addstopButton)){
+            modify();
+        }
+        else if(e.getSource().equals(this.sandpButton)){
+            sandp();
+        }
+        else if(e.getSource().equals(this.mimicButton)){
+            mimic();
+        }
     }
 
 
     public void run(){
         panel = new JPanel();
+        text = new JTextArea();
+        scroll = new JScrollPane(text);
+        panel.add(scroll);
+        text.setEditable(false);
+        text.setLineWrap(true);
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         addPButton = new JButton("Add Product");
         addSButton = new JButton("Add Supplier");
@@ -156,5 +157,3 @@ public class AdminState extends State implements ActionListener{
         WarehouseContext.instance().getFrame().validate();
     }
 }
-
-//private AbstractButton exitButton, addPButton, addSButton, supplierButton, sandpButton, pandsButton, addstopButton, mimicButton;

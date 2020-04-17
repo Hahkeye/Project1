@@ -58,8 +58,8 @@ public class Warehouse implements Serializable{
         }
         return tempS;
     }
-    public void getClientsWithBalance(){//part 9
-        this.clients.withBalance();
+    public String getClientsWithBalance(){//part 9
+        return this.clients.withBalance();
     }
     public void getSuppliersAndProducts(){
         Iterator it = this.suppliers.getSuppliers();
@@ -219,7 +219,7 @@ public class Warehouse implements Serializable{
         Iterator it = warehouse.clients.getClients();
         while(it.hasNext()){
             Client tempC=(Client)it.next();
-            if(tempC.waiting(pid)<=count){return true;}
+            if(tempC.waiting(pid)<=count && tempC.waiting(pid)!=0 ){return true;}
         }
         return false;
     }
@@ -231,8 +231,13 @@ public class Warehouse implements Serializable{
             while(it.hasNext()){
                 tempS+="\n"+it;
             }
+            if(tempS.length()==0){
+                return "Empty";
+            }
+            return tempS;
         }
-        return tempS;
+        return null;
+        
     }
     public void recieve(int id, int count){
         Iterator it = warehouse.clients.getClients();

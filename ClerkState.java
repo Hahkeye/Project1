@@ -10,17 +10,9 @@ public class ClerkState extends State implements ActionListener{
     private static Warehouse warehouse;
     private WarehouseContext context;
     private static JPanel panel;
+    private JTextArea text;
+    private JScrollPane scroll;
     private static ClerkState instance;
-    private static final int EXIT = 0;
-    private static final int ADD=1;
-    private static final int PANDP=2;
-    private static final int CLIENTS=3;
-    private static final int OUSTANDING=4;
-    private static final int MIMIC=5;
-    private static final int WAITLISTS=6;
-    private static final int SHIPMENT=7;
-    private static final int PAYMENT=8;
-    private static final int PROCESS=9;
     private AbstractButton logoutButton, addButton, pandpButton, clientButton, outstandingButton, mimicButton, waitlistButton, shipmentButton, paymentButton, processButton;
     
     private ClerkState(){
@@ -34,21 +26,6 @@ public class ClerkState extends State implements ActionListener{
         return instance;
     }
 
-    public String getResponse(String query){
-        do{
-            try {
-                System.out.println(query);
-                String line = reader.readLine();
-                StringTokenizer tokenizer = new StringTokenizer(line,"\n\r\f");
-                if (tokenizer.hasMoreTokens()) {
-                    return tokenizer.nextToken();
-                }
-            } 
-            catch (IOException ioe) {
-                System.exit(0);
-            }
-        } while(true);
-    }
     public boolean tOrf(String query,String title){
         String answer = JOptionPane.showInputDialog(panel, query, title, 3);
         if(answer.charAt(0)=='y'||answer.charAt(0)=='Y'){
@@ -56,16 +33,9 @@ public class ClerkState extends State implements ActionListener{
         }
         return false;
     }
-
-    public void userMenu(){
-        int userID = Integer.valueOf(getResponse("Please input the user id: "));
-        if(warehouse.getClient(userID)!=null){
-            WarehouseContext.instance().changeState(1);
-        }
-    }
     public void add(){
         do{
-            String name = getResponse("Enter name:");
+            String name = JOptionPane.showInputDialog(panel, "Enter name: ");
             warehouse.addClient(name);
             if(!tOrf("Do you want to add another Client? y/n?","Multi-Client prompt")){
                 break;
@@ -73,25 +43,33 @@ public class ClerkState extends State implements ActionListener{
         }while(true);
     }
     public void pandp(){
+        String tempS = "";
         Iterator it = warehouse.getProducts();
         while(it.hasNext()){
             Product temp = (Product) it.next();
-            System.out.println(temp); 
+            tempS+=(temp+"\n"); 
         }
+        text.setText(tempS);
     }
     public void clients(){
+        String tempS = "";
         Iterator it = warehouse.getClients();
         while(it.hasNext()){
             Client temp = (Client) it.next();
-            System.out.println(temp); 
+            tempS+=(temp+"\n"); 
         }
+        text.setText(tempS);
     }
     public void outstanding(){
-        warehouse.getClientsWithBalance();
+        if(warehouse.getClientsWithBalance().length()>0){
+            text.setText(warehouse.getClientsWithBalance());
+        }
+        text.setText("No outstanding clients");
     }
     public void mimic(){
-        int cid = Integer.valueOf(getResponse("Enter UserID: "));
+        int cid = Integer.valueOf(JOptionPane.showInputDialog(panel, "Enter Client ID", "Client Login",3));
         if(warehouse.getClient(cid)!=null){
+            panel.setVisible(false);;
             WarehouseContext.instance().setUser(cid);
             WarehouseContext.instance().changeState(1);
 
@@ -101,36 +79,41 @@ public class ClerkState extends State implements ActionListener{
     }
     public void shipment(){
         do{
-            int pid = Integer.valueOf(getResponse("Enter the product ID: "));
-            int count = Integer.valueOf(getResponse("Enter count coming in: "));
+            int pid = Integer.valueOf(JOptionPane.showInputDialog(panel, "What product ID is being recieved?", "Recieve Shipment", 3));
+            int count = Integer.valueOf(JOptionPane.showInputDialog(panel, "How man are being recieved?", "Recieve Shipment",3));
             if(warehouse.checkWaitList(pid,count)){
                 if(tOrf("Do you want to fill the waitlist?y/n?","Waitlist prompt")){
                     warehouse.recieve(pid, count);
                 }else{
                     warehouse.adjustProduct(pid, count);
                 }
-            }
-            if(warehouse.existsP(pid)){
+            }else{
                 warehouse.adjustProduct(pid, count);
             }
         }while(tOrf("Would you like to enter another product?","Multi-product prompt"));
     }
     public void payment(){
-        int cid = Integer.valueOf(getResponse("Enter client id:"));
-        Double price = Double.valueOf(getResponse("Enter amount being payed: "));
-        System.out.println("the payment was "+warehouse.pay(cid, price));
+        int cid = Integer.valueOf(JOptionPane.showInputDialog(panel, "Enter Client ID", "Payment",3));
+        Double price = Double.valueOf(JOptionPane.showInputDialog(panel, "Enter payment amount.", "Payment",3));
+        JOptionPane.showMessageDialog(panel, "the payment was "+warehouse.pay(cid, price));
+        //System.out.println("the payment was "+warehouse.pay(cid, price));
     }
     public void processOrder(){
-        int cid = Integer.valueOf(getResponse("Enter client ID: "));
-        System.out.println(warehouse.processOrder(cid));
+        int cid = Integer.valueOf(JOptionPane.showInputDialog(panel, "Enter Client ID", "Payment",3));
+        if(warehouse.processOrder(cid)){
+            JOptionPane.showMessageDialog(panel,"Order processed succesfully");
+        }else{
+            JOptionPane.showMessageDialog(panel,"Order failed to process");
+        }
+        
     }
     public void waitlist(){
-        int pid =  Integer.valueOf(getResponse("Enter product id: "));
+        int pid = Integer.valueOf(JOptionPane.showInputDialog(panel, "What is the product ID?", "Waitlist", 3));
         int waiting = warehouse.waiting(pid);
         if(waiting!=0){
-            System.out.println("Are waiting on "+waiting);
+            text.setText("Are waiting on "+waiting);
         }else{
-            System.out.println("Not waiting on any");
+            text.setText("Not waiting on any");
         }
     }
     public void logout(){
@@ -138,9 +121,7 @@ public class ClerkState extends State implements ActionListener{
             WarehouseContext.instance().changeState(3);
         }else{
             WarehouseContext.instance().changeState(0);
-        }
-        //WarehouseContext.instance().getFrame().removeAll();
-        
+        }      
     }
 
     @Override
@@ -149,12 +130,44 @@ public class ClerkState extends State implements ActionListener{
             panel.setVisible(false);
             logout();
         }
+        else if(e.getSource().equals(this.addButton)){
+            add();
+        }
+        else if(e.getSource().equals(this.pandpButton)){
+            pandp();
+        }
+        else if(e.getSource().equals(this.clientButton)){
+            clients();
+        }
+        else if(e.getSource().equals(this.outstandingButton)){
+            outstanding();
+        }
+        else if(e.getSource().equals(this.mimicButton)){
+            mimic();
+        }
+        else if(e.getSource().equals(this.waitlistButton)){
+            waitlist();
+        }
+        else if(e.getSource().equals(this.shipmentButton)){
+            shipment();
+        }
+        else if(e.getSource().equals(this.processButton)){
+            processOrder();
+        }
+        else if(e.getSource().equals(this.paymentButton)){
+            payment();
+        }
 
     }
 
 
     public void run(){
         panel = new JPanel();
+        text = new JTextArea();
+        scroll = new JScrollPane(text);
+        panel.add(scroll);
+        text.setEditable(false);
+        text.setLineWrap(true);
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         addButton = new JButton("Add Client");
         pandpButton = new JButton("Show Products");

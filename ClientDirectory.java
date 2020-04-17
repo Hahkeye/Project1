@@ -39,14 +39,16 @@ public class ClientDirectory implements Serializable{
         }
         return null;
     }
-    public void withBalance(){
+    public String withBalance(){
+        String tempS="";
         Iterator it = directory.iterator();
         while(it.hasNext()){
             Client temp = (Client)it.next();
             if(temp.getBalance()<0){
-                System.out.println(temp);
+                tempS+=(temp+"\n");
             }
         }
+        return tempS;
     }
     public boolean insert(Client c){
         this.directory.add(c);
