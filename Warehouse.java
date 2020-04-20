@@ -61,19 +61,22 @@ public class Warehouse implements Serializable{
     public String getClientsWithBalance(){//part 9
         return this.clients.withBalance();
     }
-    public void getSuppliersAndProducts(){
+    public String getSuppliersAndProducts(){
+        String tempS = "";
         Iterator it = this.suppliers.getSuppliers();
         while(it.hasNext()){
             Supplier s = (Supplier)it.next();
-            System.out.println("Name: "+s.getName()+"|ID:"+s.getID());
+            tempS+=("Name: "+s.getName()+"|ID:"+s.getID());
+            //System.out.println("Name: "+s.getName()+"|ID:"+s.getID());
             Iterator it2 = s.getItems();
             while(it2.hasNext()){
                 Map.Entry<Product,Integer> temp = (Map.Entry<Product,Integer>)it2.next();
                 Product tempP = (Product)temp.getKey();
-                System.out.println("\t"+tempP.getName()+"|ID:"+tempP.getID()+"|"+temp.getValue());
+                tempS+=("\n\t"+tempP.getName()+"|ID:"+tempP.getID()+"|"+temp.getValue());
             }
-
+            tempS+="\n";
         }
+        return tempS;
     }
     public void getAllProducts(){
         Iterator it = this.products.getProducts();

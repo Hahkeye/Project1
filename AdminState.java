@@ -58,13 +58,15 @@ public class AdminState extends State implements ActionListener{
     }
     public void supplierList(){
         Iterator it = warehouse.getSuppliers();
+        String temp = "";
         while(it.hasNext()){
             Supplier tempS = (Supplier) it.next();
-            System.out.println(tempS);
+            temp+=("Name: "+tempS.getName()+"\nID: "+tempS.getID()+"\n\n");
         }
+        text.setText(temp);
     }
     public void sandp(){
-        warehouse.getSuppliersAndProducts();
+        text.setText(warehouse.getSuppliersAndProducts());
     }
     public void mimic(){
         panel.setVisible(false);;
@@ -107,7 +109,7 @@ public class AdminState extends State implements ActionListener{
         else if(e.getSource().equals(this.addSButton)){
             addSupplier();
         }
-        else if(e.getSource().equals(this.addPButton)){
+        else if(e.getSource().equals(this.supplierButton)){
             supplierList();
         }
         else if(e.getSource().equals(this.addstopButton)){
